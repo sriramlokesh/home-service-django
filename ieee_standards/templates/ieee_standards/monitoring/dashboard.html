@@ -1,0 +1,136 @@
+{% extends 'ieee_standards/base.html' %}
+
+{% block subtitle %}Monitoring Dashboard{% endblock %}
+{% block page_title %}IoT Monitoring Dashboard{% endblock %}
+
+{% block header_actions %}
+<a href="{% url 'ieee_standards:device-list' %}" class="btn btn-primary">
+    <i class="fas fa-microchip"></i> View All Devices
+</a>
+{% endblock %}
+
+{% block ieee_content %}
+<div class="dashboard-grid">
+    <!-- Smart Meters Section -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3>Smart Meters</h3>
+        </div>
+        <div class="card-body">
+            {% if monitoring_items.smart_meters %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Device ID</th>
+                        <th>Location</th>
+                        <th>Status</th>
+                        <th>Consumption</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for meter in monitoring_items.smart_meters %}
+                    <tr>
+                        <td>{{ meter.device_id }}</td>
+                        <td>{{ meter.location }}</td>
+                        <td><span class="badge badge-{{ meter.status|lower }}">{{ meter.status }}</span></td>
+                        <td>{{ meter.power_consumption }} kWh</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-muted">No smart meters found.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- IoT Devices Section -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3>IoT Devices</h3>
+        </div>
+        <div class="card-body">
+            {% if monitoring_items.iot_devices %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Device ID</th>
+                        <th>Type</th>
+                        <th>Location</th>
+                        <th>Security</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for device in monitoring_items.iot_devices %}
+                    <tr>
+                        <td>{{ device.device_id }}</td>
+                        <td>{{ device.device_type }}</td>
+                        <td>{{ device.location }}</td>
+                        <td>
+                            {% if device.check_security_compliance %}
+                            <span class="badge badge-success">Secure</span>
+                            {% else %}
+                            <span class="badge badge-danger">Non-Compliant</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-muted">No IoT devices found.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Recent Alerts Section -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3>Recent Alerts</h3>
+        </div>
+        <div class="card-body">
+            {% if monitoring_items.recent_alerts %}
+            <div class="alert-list">
+                {% for alert in monitoring_items.recent_alerts %}
+                <div class="alert alert-{{ alert.alert_type|lower }}">
+                    <div class="alert-header">
+                        <strong>{{ alert.device.device_id }}</strong>
+                        <span class="badge badge-{{ alert.alert_type|lower }}">{{ alert.alert_type }}</span>
+                    </div>
+                    <p>{{ alert.description }}</p>
+                    <small>{{ alert.timestamp|date:"M d, Y H:i" }}</small>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-success">No active alerts.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Device Performance Chart -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3>Device Performance</h3>
+        </div>
+        <div class="card-body">
+            <canvas id="performanceChart" class="ieee-chart" 
+                    data-chart-type="line"
+                    data-chart-data='{"labels": ["00:00", "04:00", "08:00", "12:00", "16:00", "20:00"],
+                                    "datasets": [{"label": "Performance", "data": [95, 92, 88, 90, 87, 94]}]}'>
+            </canvas>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Initialize charts when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeCharts();
+    });
+</script>
+{% endblock %} 

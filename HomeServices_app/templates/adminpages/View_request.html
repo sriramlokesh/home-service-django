@@ -34,7 +34,7 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-header">
-                                <strong class="card-title">Apointment Requests</strong>
+                                <strong class="card-title">Appointment Requests</strong>
                             </div>
                             <div class="card-body">
 
@@ -55,25 +55,20 @@
                                     <tbody>
                                     {% for records in request_records %}
                                         <tr>
-<!--                                            <td>pics</td>-->
-
-                                            {% if records.status == False %}
                                             <td>{{records.user.admin.first_name}}</td>
                                             <td>{{records.service.Name}}</td>
                                             <td>{{records.Problem_Description}}</td>
                                             <td>{{records.Address}} , {{records.House_No}} ,{{records.pin}}</td>
                                             <td>{{records.city.name}}</td>
-<!--                                            <td></td>-->
-<!--                                            <td></td>-->
                                             <td>{{records.landmark}}</td>
-
                                             <td>
-                                                
-                                                <a href="{% url 'AssignWorker' id=records.id %}" class="btn btn-success btn-sm">Assign</a>
+                                                {% if records.status == False %}
+                                                    <a href="{% url 'AssignWorker' id=records.id %}" class="btn btn-success btn-sm">Assign</a>
+                                                {% else %}
+                                                    <span class="btn btn-warning btn-sm">Assigned</span>
+                                                {% endif %}
                                                 <a href="{% url 'CancelRequest' id=records.id %}" class="btn btn-danger btn-sm">Cancel</a>
                                             </td>
-                                            {% endif %}
-
                                         </tr>
                                     {% endfor %}
                                     </tbody>

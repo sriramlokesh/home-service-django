@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}IEEE Standards - {% block subtitle %}{% endblock %}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'ieee_standards/css/ieee.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="ieee-container">
+    <nav class="ieee-nav">
+        <div class="nav-header">
+            <h2>IEEE Standards</h2>
+        </div>
+        <ul class="nav-links">
+            <li><a href="{% url 'ieee_standards:safety-dashboard' %}" class="{% if 'safety' in request.path %}active{% endif %}">
+                <i class="fas fa-shield-alt"></i> Safety
+            </a></li>
+            <li><a href="{% url 'ieee_standards:monitoring-dashboard' %}" class="{% if 'monitoring' in request.path %}active{% endif %}">
+                <i class="fas fa-chart-line"></i> Monitoring
+            </a></li>
+            <li><a href="{% url 'ieee_standards:quality-dashboard' %}" class="{% if 'quality' in request.path %}active{% endif %}">
+                <i class="fas fa-check-circle"></i> Quality
+            </a></li>
+        </ul>
+    </nav>
+
+    <div class="ieee-content">
+        <div class="content-header">
+            <h1>{% block page_title %}{% endblock %}</h1>
+            {% block header_actions %}{% endblock %}
+        </div>
+
+        <div class="content-body">
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% block ieee_content %}{% endblock %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'ieee_standards/js/ieee.js' %}"></script>
+{% endblock %} 

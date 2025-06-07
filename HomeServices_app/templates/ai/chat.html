@@ -1,0 +1,313 @@
+{% extends 'userpages/user_header_footer.html' %}
+{% load static %}
+
+{% block content %}
+<!-- Add Marked.js for markdown support -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+<div class="container-fluid py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0"><i class="fas fa-robot"></i> AI Assistant</h4>
+                        <small>Logged in as: {{ request.user.username }}</small>
+                    </div>
+                    <div class="card-body">
+                        <div class="chat-container" id="chatContainer" style="height: 400px; overflow-y: auto;">
+                            <!-- Chat messages will appear here -->
+                            <div class="text-center text-muted">
+                                <p>Hello {{ request.user.username }}! I'm your AI assistant. I can help you with:</p>
+                                <ul class="text-start mx-4">
+                                    <li>Finding the right service providers</li>
+                                    <li>Getting recommendations for home services</li>
+                                    <li>Understanding service requirements</li>
+                                    <li>Estimating costs and timeframes</li>
+                                </ul>
+                                <p>How can I assist you today?</p>
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <form id="chatForm" class="d-flex" data-user="{{ request.user.username }}">
+                                {% csrf_token %}
+                                <input type="text" id="userMessage" class="form-control" placeholder="Type your message here..." required>
+                                <button type="submit" class="btn btn-primary ms-2" id="sendButton">
+                                    <i class="fas fa-paper-plane" id="sendIcon"></i>
+                                    <span class="spinner-border spinner-border-sm d-none" id="loadingSpinner" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </span>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.max-w-75 {
+    max-width: 75%;
+}
+
+.chat-container {
+    background: #ffffff;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.message-bubble {
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    background: none;
+}
+
+.message-bubble.ai-message {
+    white-space: normal;
+    background-color: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.message-bubble.ai-message ul,
+.message-bubble.ai-message ol {
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+.typing-indicator {
+    padding: 0.5rem;
+    color: #6c757d;
+    font-style: italic;
+    background: #f8f9fa;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.error-message {
+    color: #dc3545;
+    background-color: #f8d7da !important;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.user-message {
+    background-color: #007bff;
+    color: white;
+}
+
+.ai-message {
+    background-color: #f8f9fa;
+    color: #212529;
+    border: 1px solid #dee2e6;
+}
+
+.ai-message a {
+    color: #007bff;
+    text-decoration: underline;
+}
+
+.ai-message code {
+    background-color: #f8f9fa;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+.typing-dots {
+    display: inline-block;
+}
+
+.typing-dots span {
+    animation: typing 1s infinite;
+    margin-right: 2px;
+}
+
+.typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+.typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes typing {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+/* Clean background styles */
+.card {
+    background: white;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    background: #007bff;
+    color: white;
+    border: none;
+}
+
+.card-body {
+    background: white;
+}
+
+.form-control {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+}
+
+.form-control:focus {
+    background: white;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+}
+
+.btn-primary {
+    background: #007bff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background: #0056b3;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const chatForm = document.getElementById('chatForm');
+    const userMessage = document.getElementById('userMessage');
+    const chatContainer = document.getElementById('chatContainer');
+    const sendButton = document.getElementById('sendButton');
+    const sendIcon = document.getElementById('sendIcon');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const currentUser = chatForm.dataset.user;
+
+    // Configure marked.js
+    marked.setOptions({
+        breaks: true,
+        gfm: true
+    });
+
+    function setLoading(isLoading) {
+        if (isLoading) {
+            sendIcon.classList.add('d-none');
+            loadingSpinner.classList.remove('d-none');
+            userMessage.disabled = true;
+            sendButton.disabled = true;
+            
+            // Add typing indicator
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'd-flex justify-content-start mb-3';
+            typingDiv.id = 'typingIndicator';
+            typingDiv.innerHTML = `
+                <div class="message-bubble ai-message rounded p-2">
+                    <div class="typing-dots">
+                        Thinking<span>.</span><span>.</span><span>.</span>
+                    </div>
+                </div>
+            `;
+            chatContainer.appendChild(typingDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        } else {
+            sendIcon.classList.remove('d-none');
+            loadingSpinner.classList.add('d-none');
+            userMessage.disabled = false;
+            sendButton.disabled = false;
+            
+            // Remove typing indicator
+            const typingIndicator = document.getElementById('typingIndicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+        }
+    }
+
+    function addMessage(content, type = 'user') {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `d-flex justify-content-${type === 'user' ? 'end' : 'start'} mb-3`;
+        
+        let messageClass = '';
+        let processedContent = content;
+        
+        switch(type) {
+            case 'user':
+                messageClass = 'user-message';
+                processedContent = `<strong>${currentUser}:</strong> ${content.replace(/</g, '&lt;').replace(/>/g, '&gt;')}`;
+                break;
+            case 'ai':
+                messageClass = 'ai-message';
+                processedContent = marked.parse(content);
+                break;
+            case 'error':
+                messageClass = 'error-message';
+                processedContent = `<i class="fas fa-exclamation-circle"></i> ${content}`;
+                break;
+        }
+        
+        messageDiv.innerHTML = `
+            <div class="message-bubble ${messageClass} rounded p-2 max-w-75">
+                ${processedContent}
+            </div>
+        `;
+        chatContainer.appendChild(messageDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+
+    async function sendMessage(message) {
+        try {
+            const response = await fetch('{% url "ai_chat" %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+                body: JSON.stringify({ 
+                    message: message,
+                    user: currentUser
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (!response.ok) {
+                throw new Error(data.message || 'Server error occurred');
+            }
+            
+            if (data.error) {
+                throw new Error(data.message);
+            }
+            
+            return data.response;
+        } catch (error) {
+            console.error('Error:', error);
+            throw error;
+        }
+    }
+
+    chatForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const message = userMessage.value.trim();
+        if (!message) return;
+
+        // Add user message
+        addMessage(message, 'user');
+        userMessage.value = '';
+        setLoading(true);
+
+        try {
+            // Send message and get response
+            const response = await sendMessage(message);
+            addMessage(response, 'ai');
+        } catch (error) {
+            addMessage(error.message || 'An error occurred while processing your request. Please try again.', 'error');
+        } finally {
+            setLoading(false);
+            userMessage.focus();
+        }
+    });
+
+    // Focus input on page load
+    userMessage.focus();
+});
+</script>
+{% endblock %} 

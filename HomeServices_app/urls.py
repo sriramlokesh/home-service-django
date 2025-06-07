@@ -11,11 +11,12 @@ from django.contrib.auth.views import (
     PasswordResetConfirmView,
     PasswordResetCompleteView
 )
+from .test_services import TestServicesView
+from .ai_views import AIRecommendationView, AIAnalysisView, AIChatView, AITestView
 
 urlpatterns = [
-
-
-    path('', views.Login.as_view(), name='login'),
+    path('', views.ChooseLogin.as_view(), name='choose_login'),
+    path('login/', views.Login.as_view(), name='login_page'),
     path('logout', views.logout_view, name='logout'),
     path('user_registration/', views.User_Register.as_view(), name='user_registration'),
     path('Worker_Register/', views.Worker_Register.as_view(), name='Worker_Register'),
@@ -33,6 +34,7 @@ urlpatterns = [
     path('manageworker/', views.manageworker.as_view(), name='manageworker'),
     path('manageusers/', views.manageusers.as_view(), name='manageusers'),
     path('verify_worker/<str:action>/<int:id>',views.verify_worker.as_view(),name='verify_worker'),
+    path('delete_worker/<int:id>',views.DeleteWorker.as_view(),name='delete_worker'),
 
     path('AddCountry/', views.AddCountry.as_view(), name='AddCountry'),
     path('ManageCountry/', views.ManageCountry.as_view(), name='ManageCountry'),
@@ -65,6 +67,7 @@ urlpatterns = [
     path('CancelRequest/<int:id>',views.CancelRequest.as_view(),name='CancelRequest'),
     path('userprofile/',views.userprofile.as_view(),name='userprofile'),
     path('workerprofile/',views.workerprofile.as_view(),name='workerprofile'),
+    path('edit_worker_profile/', views.EditWorkerProfile.as_view(), name='edit_worker_profile'),
    
 
 
@@ -85,7 +88,14 @@ urlpatterns = [
     path('password-reset-confirm/<uidb64>/<token>/', PasswordResetConfirmView.as_view(template_name='password_reset_confirm.html'),name='password_reset_confirm'),
     path('password-reset-complete/',PasswordResetCompleteView.as_view(template_name='password_reset_complete.html'),name='password_reset_complete'),
 
-    
+    # Test Services
+    path('test-services/', TestServicesView.as_view(), name='test_services'),
+
+    # AI Routes
+    path('ai/test/', AITestView.as_view(), name='ai_test'),
+    path('ai/chat/', AIChatView.as_view(), name='ai_chat'),
+    path('ai/recommend/', AIRecommendationView.as_view(), name='ai_recommend'),
+    path('ai/analyze/', AIAnalysisView.as_view(), name='ai_analyze'),
 
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_URL)
