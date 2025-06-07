@@ -1,5 +1,5 @@
 [build]
-  command = "python manage.py collectstatic --noinput"
+  command = "pip install -r requirements.txt && python manage.py collectstatic --noinput"
   publish = "staticfiles"
 
 [build.environment]
@@ -8,4 +8,9 @@
 [[redirects]]
   from = "/*"
   to = "/index.html"
-  status = 200 
+  status = 200
+
+[[headers]]
+  for = "/*"
+    [headers.values]
+    Access-Control-Allow-Origin = "*" 
