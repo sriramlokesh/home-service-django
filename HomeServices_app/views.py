@@ -22,7 +22,9 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
 from django.utils.decorators import method_decorator
 
-
+class LoadingView(View):
+    def get(self, request):
+        return render(request, 'loading.html')
 
 class Commenlib:
     def __init__(self):
@@ -1195,9 +1197,5 @@ def update_service_tracking(request):
         'error': True,
         'message': 'Invalid request method'
     })
-
-class LoadingView(View):
-    def get(self, request):
-        return render(request, 'loading.html')
 
         
