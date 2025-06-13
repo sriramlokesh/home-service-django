@@ -15,7 +15,8 @@ from .test_services import TestServicesView
 from .ai_views import AIRecommendationView, AIAnalysisView, AIChatView, AITestView
 
 urlpatterns = [
-    path('', views.ChooseLogin.as_view(), name='choose_login'),
+    path('', views.LoadingView.as_view(), name='loading'),
+    path('choose-login/', views.ChooseLogin.as_view(), name='choose_login'),
     path('login/', views.Login.as_view(), name='login_page'),
     path('logout', views.logout_view, name='logout'),
     path('user_registration/', views.User_Register.as_view(), name='user_registration'),
