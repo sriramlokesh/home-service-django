@@ -2,8 +2,6 @@
 {% load static %}
 {% block content %}
     <style>
-
-
         .container {
             height:100%;
             margin: auto;
@@ -58,7 +56,7 @@
     </style>
 
     <div class="container mt-5">
-        <h1>User Registration Form</h1>
+        <h1>ASSIGN WORKER FORM</h1>
         {{msg}}
         <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
@@ -81,9 +79,9 @@
             </div>
 
             <div class="form-row">
-                <div class= "form-group col-md-6">
+                <div class="form-group col-md-6">
                     <label>Assign a Worker</label>
-                    <select class="form-control " style="" name="assigned_worker" id="assigned_worker">
+                    <select class="form-control" name="assigned_worker" id="assigned_worker">
                         <option selected>Select Worker</option>
                         {% for records in workers_records %}
                         <option value="{{records.id}}">{{records.admin.first_name}} ({{records.id}})</option>
@@ -96,7 +94,6 @@
                 </div>
             </div>
 
-            
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="firstname">House_No :</label>
@@ -118,13 +115,8 @@
                 </div>
             </div>
 
-
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
-
     </div>
-
-    <!-- Add Bootstrap JS and jQuery (required for Bootstrap JS) -->
-
 {% endblock %}
 

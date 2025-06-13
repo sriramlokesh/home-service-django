@@ -10,15 +10,15 @@ load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('SECRET_KEY', '-p@o12h+fw!7=k6#l8o@6raux@y!g1u024bej^dd0%w!2$b@pn')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'default-secret-key-for-development')
 
-# Gemini API Key - Using a default value for development
-GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY', 'AIzaSyDxW_BPq6U2VJbStF7WdFvHnAPwWFmRBqA')
+# Gemini API Key
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.85.229']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '192.168.85.229', '192.168.85.233']
 
 # Application definition
 INSTALLED_APPS = [
@@ -35,7 +35,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # For static files
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -132,11 +132,15 @@ X_FRAME_OPTIONS = 'DENY'
 
 # CSRF Settings
 CSRF_COOKIE_SECURE = False  # Set to True in production with HTTPS
-CSRF_COOKIE_HTTPONLY = False  # Set to False to allow JavaScript access
-CSRF_USE_SESSIONS = False  # Store CSRF token in cookie instead of session
+CSRF_COOKIE_HTTPONLY = False  # Allow JavaScript access to CSRF cookie
+CSRF_USE_SESSIONS = False
 CSRF_COOKIE_SAMESITE = 'Lax'
-CSRF_COOKIE_NAME = 'csrftoken'
-CSRF_HEADER_NAME = 'HTTP_X_CSRFTOKEN'
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'http://192.168.85.229:8000',
+    'http://192.168.85.233:8000'
+]
 
 # Session Settings
 SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
