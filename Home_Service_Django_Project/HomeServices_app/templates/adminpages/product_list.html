@@ -1,0 +1,109 @@
+{% extends "adminpages/admin_header_footer.html" %}
+{% load static %}
+{% block content %}
+<style>
+.product-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: flex-start;
+  margin-top: 1.5rem;
+}
+.product-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  width: 220px;
+  padding: 16px;
+  transition: box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.product-card:hover {
+  box-shadow: 0 4px 24px rgba(0,200,83,0.15);
+}
+.product-card img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.product-info {
+  margin-top: 12px;
+  width: 100%;
+  text-align: center;
+}
+.price {
+  font-weight: bold;
+  color: #222;
+}
+.actions a {
+    margin: 0 4px;
+}
+.shop-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.shop-title {
+    display: flex;
+    align-items: center;
+}
+.shop-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+}
+</style>
+<div class="container mt-4">
+    <h3 class="mb-4">Manage Products in {{ category|title }}</h3>
+
+    {% for shop in shops %}
+    <div class="card mt-4">
+        <div class="card-header shop-header">
+            <div class="shop-title">
+                <a href="{% url 'add_product_to_shop' shop.id %}">
+                    {% if shop.image %}
+                        <img src="{{ shop.image.url }}" alt="{{ shop.name }}" class="shop-image">
+                    {% else %}
+                        <img src="https://via.placeholder.com/50x50?text=Shop" alt="Default shop image" class="shop-image">
+                    {% endif %}
+                </a>
+                <strong class="card-title">{{ shop.name }}</strong>
+            </div>
+            <a href="{% url 'add_product_to_shop' shop.id %}" class="btn btn-success btn-sm">+ Add Product</a>
+        </div>
+        <div class="card-body">
+            {% if shop.products.all %}
+                <div class="product-grid">
+                    {% for product in shop.products.all %}
+                    <div class="product-card">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+                        {% else %}
+                            <img src="https://via.placeholder.com/200x140?text=No+Image" alt="No Image">
+                        {% endif %}
+                        <div class="product-info">
+                            <h5>{{ product.name }}</h5>
+                            <p class="price">₹{{ product.price }}</p>
+                            <div class="actions">
+                                <a href="{% url 'edit_product' product.pk %}" class="btn btn-secondary btn-sm">Edit</a>
+                                <a href="{% url 'delete_product' product.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-center">No products found for this shop. Click the shop image or "Add Product" to get started.</p>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <div class="alert alert-info">No shops found for this category. Please <a href="{% url 'add_shop' category %}">create a shop</a> first.</div>
+    {% endfor %}
+</div>
+{% endblock %} 

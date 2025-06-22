@@ -1,0 +1,154 @@
+{% extends 'ieee_standards/base.html' %}
+
+{% block subtitle %}Quality Dashboard{% endblock %}
+{% block page_title %}Quality Assurance Dashboard{% endblock %}
+
+{% block header_actions %}
+<a href="{% url 'ieee_standards:audit-create' %}" class="btn btn-primary">
+    <i class="fas fa-clipboard-check"></i> New Audit
+</a>
+{% endblock %}
+
+{% block ieee_content %}
+<div class="dashboard-grid">
+    <!-- Service Quality Section -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3>Service Quality Metrics</h3>
+        </div>
+        <div class="card-body">
+            {% if quality_items.service_quality %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Service ID</th>
+                        <th>Type</th>
+                        <th>Score</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for service in quality_items.service_quality %}
+                    <tr>
+                        <td>{{ service.service_id }}</td>
+                        <td>{{ service.service_type }}</td>
+                        <td>{{ service.calculate_overall_score }}%</td>
+                        <td>
+                            {% if service.is_compliant %}
+                            <span class="badge badge-success">Compliant</span>
+                            {% else %}
+                            <span class="badge badge-danger">Non-Compliant</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-muted">No service quality data available.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Recent Audits Section -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3>Recent Audits</h3>
+        </div>
+        <div class="card-body">
+            {% if quality_items.recent_audits %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th>Auditor</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for audit in quality_items.recent_audits %}
+                    <tr>
+                        <td>{{ audit.audit_date|date:"M d, Y" }}</td>
+                        <td>{{ audit.audit_type }}</td>
+                        <td>{{ audit.auditor.get_full_name }}</td>
+                        <td>
+                            {% if audit.is_passed %}
+                            <span class="badge badge-success">Passed</span>
+                            {% else %}
+                            <span class="badge badge-danger">Failed</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-muted">No recent audits found.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Improvement Actions Section -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3>Improvement Actions</h3>
+        </div>
+        <div class="card-body">
+            {% if quality_items.improvement_actions %}
+            <div class="action-list">
+                {% for action in quality_items.improvement_actions %}
+                <div class="action-item">
+                    <div class="action-header">
+                        <span class="badge badge-{{ action.priority|lower }}">{{ action.priority }}</span>
+                        <span class="badge badge-{{ action.status|lower }}">{{ action.status }}</span>
+                    </div>
+                    <h4>{{ action.action_type }}</h4>
+                    <p>{{ action.description }}</p>
+                    <div class="action-footer">
+                        <small>Created: {{ action.created_date|date:"M d, Y" }}</small>
+                        {% if action.status != 'COMPLETED' %}
+                        <a href="{% url 'ieee_standards:improvement-update' action.pk %}" class="btn btn-sm btn-outline-primary">
+                            Update
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-muted">No improvement actions found.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Quality Trends Chart -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3>Quality Trends</h3>
+        </div>
+        <div class="card-body">
+            <canvas id="qualityTrendsChart" class="ieee-chart" 
+                    data-chart-type="line"
+                    data-chart-data='{"labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+                                    "datasets": [
+                                        {"label": "Safety", "data": [85, 88, 87, 90, 92, 91]},
+                                        {"label": "Reliability", "data": [82, 85, 87, 89, 88, 90]},
+                                        {"label": "Efficiency", "data": [78, 80, 82, 85, 87, 88]}
+                                    ]}'>
+            </canvas>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Initialize charts when the page loads
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeCharts();
+    });
+</script>
+{% endblock %} 

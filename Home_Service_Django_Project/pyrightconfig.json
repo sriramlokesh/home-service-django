@@ -1,0 +1,16 @@
+{
+    "include": [
+        "HomeServices_app",
+        "Home_Service_Django_Project"
+    ],
+    "exclude": [
+        "**/node_modules",
+        "**/__pycache__"
+    ],
+    "ignore": [
+        "HomeServices_app/migrations"
+    ],
+    "reportMissingImports": false,
+    "pythonVersion": "3.11",
+    "typeCheckingMode": "basic"
+} 

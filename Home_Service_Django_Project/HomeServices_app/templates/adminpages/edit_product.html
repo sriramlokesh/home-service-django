@@ -1,0 +1,152 @@
+{% extends "adminpages/admin_header_footer.html" %}
+{% load static %}
+{% block content %}
+<style>
+.form-group {
+    margin-bottom: 20px;
+}
+.form-group label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: block;
+}
+.form-control {
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    padding: 10px 12px;
+}
+.form-control:focus {
+    border-color: #00c853;
+    box-shadow: 0 0 0 0.2rem rgba(0, 200, 83, 0.25);
+}
+.btn-success {
+    background-color: #00c853;
+    border-color: #00c853;
+    padding: 12px 30px;
+    font-weight: bold;
+}
+.btn-success:hover {
+    background-color: #009624;
+    border-color: #009624;
+}
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+    padding: 12px 30px;
+    font-weight: bold;
+    margin-left: 10px;
+}
+.btn-secondary:hover {
+    background-color: #5a6268;
+    border-color: #545b62;
+}
+</style>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4>Edit Product - {{ product.name }}</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_name">Product Name</label>
+                            {{ form.name }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_category">Category</label>
+                            {{ form.category }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_subcategory">Subcategory</label>
+                            {{ form.subcategory }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_price">Price (₹)</label>
+                            {{ form.price }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_description">Description</label>
+                            {{ form.description }}
+                        </div>
+                        <div class="form-group">
+                            <label for="id_image">Product Image</label>
+                            {{ form.image }}
+                            {% if product.image %}
+                                <small class="form-text text-muted">Current image: {{ product.image.name }}</small>
+                            {% endif %}
+                        </div>
+                        <button type="submit" class="btn btn-success">Save Changes</button>
+                        <a href="{% url 'product_list' %}" class="btn btn-secondary">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Subcategory data
+const subcategoryData = {
+    'grocery': [
+        ['dairy', 'Dairy & Eggs'],
+        ['snacks', 'Snacks & Branded Foods'],
+        ['beverages', 'Beverages'],
+        ['bakery', 'Bakery & Biscuits'],
+        ['breakfast', 'Breakfast & Instant Food'],
+        ['staples', 'Staples'],
+        ['sweets', 'Sweets & Chocolates']
+    ],
+    'electricals': [
+        ['bulbs', 'Bulbs & Tubelights'],
+        ['switches', 'Switches & Sockets'],
+        ['wires', 'Wires & Cables'],
+        ['appliances', 'Small Appliances'],
+        ['batteries', 'Batteries & Chargers']
+    ],
+    'plumbing': [
+        ['pipes', 'Pipes & Fittings'],
+        ['taps', 'Taps & Faucets'],
+        ['showers', 'Showers & Accessories'],
+        ['tools', 'Tools & Adhesives']
+    ]
+};
+
+// Function to update subcategory options
+function updateSubcategories() {
+    const categorySelect = document.getElementById('category-select');
+    const subcategorySelect = document.getElementById('subcategory-select');
+    const selectedCategory = categorySelect.value;
+    
+    // Clear existing options
+    subcategorySelect.innerHTML = '<option value="">Select Subcategory</option>';
+    
+    // Add new options based on selected category
+    if (subcategoryData[selectedCategory]) {
+        subcategoryData[selectedCategory].forEach(([value, label]) => {
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = label;
+            // Set selected if it matches the current product's subcategory
+            if (value === '{{ product.subcategory }}') {
+                option.selected = true;
+            }
+            subcategorySelect.appendChild(option);
+        });
+    }
+}
+
+// Add event listener to category select
+document.addEventListener('DOMContentLoaded', function() {
+    const categorySelect = document.getElementById('category-select');
+    if (categorySelect) {
+        categorySelect.addEventListener('change', updateSubcategories);
+        // Initialize subcategories on page load
+        updateSubcategories();
+    }
+});
+</script>
+{% endblock %} 

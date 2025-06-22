@@ -1,0 +1,78 @@
+{% extends "workerpages/worker_header_footer.html" %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="text-center">Edit Profile</h3>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label for="first_name">First Name</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name" value="{{ data.admin.first_name }}" required>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="last_name">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name" value="{{ data.admin.last_name }}" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" value="{{ data.admin.email }}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="contact_number">Contact Number</label>
+                            <input type="tel" class="form-control" id="contact_number" name="contact_number" value="{{ data.contact_number }}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select class="form-control" id="gender" name="gender" required>
+                                <option value="Male" {% if data.gender == 'Male' %}selected{% endif %}>Male</option>
+                                <option value="Female" {% if data.gender == 'Female' %}selected{% endif %}>Female</option>
+                                <option value="Other" {% if data.gender == 'Other' %}selected{% endif %}>Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <textarea class="form-control" id="address" name="address" rows="3" required>{{ data.Address }}</textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="city">City</label>
+                            <input type="text" class="form-control" id="city" name="city" value="{{ data.city }}" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="profile_pic">Profile Picture</label>
+                            <input type="file" class="form-control-file" id="profile_pic" name="profile_pic">
+                            <small class="form-text text-muted">Leave empty to keep current profile picture</small>
+                        </div>
+                        
+                        <div class="form-group text-center">
+                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                            <a href="{% url 'workerprofile' %}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

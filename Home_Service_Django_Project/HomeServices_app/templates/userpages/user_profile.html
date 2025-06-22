@@ -1,0 +1,83 @@
+{% extends "userpages/user_header_footer.html" %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <img src="{{ data.profile_pic.url }}" alt="Profile Picture" class="rounded-circle img-fluid" style="width: 150px;">
+                    <h5 class="my-3">{{ data.admin.first_name }} {{ data.admin.last_name }}</h5>
+                    {% if is_worker %}
+                        <p class="text-muted mb-1">{{ data.designation }}</p>
+                    {% endif %}
+                    <p class="text-muted mb-4">{{ data.city }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Full Name</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{ data.admin.first_name }} {{ data.admin.last_name }}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Email</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{ data.admin.email }}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Phone</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{ data.contact_number }}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    {% if is_worker %}
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Designation</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{ data.designation }}</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Status</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">
+                                {% if data.avalability_status %}Available{% else %}Not Available{% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    <hr>
+                    {% endif %}
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <p class="mb-0">Address</p>
+                        </div>
+                        <div class="col-sm-9">
+                            <p class="text-muted mb-0">{{ data.Address }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Admin Registration - Home Services</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+            overflow: hidden;
+            cursor: none;
+        }
+
+        /* DNA Helix Animation */
+        .dna-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+        }
+
+        .dna-strand {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.3), transparent);
+            animation: dnaRotate 20s linear infinite;
+        }
+
+        .dna-strand:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .dna-strand:nth-child(2) { left: 15%; animation-delay: -0.5s; }
+        .dna-strand:nth-child(3) { left: 20%; animation-delay: -1s; }
+        .dna-strand:nth-child(4) { left: 25%; animation-delay: -1.5s; }
+        .dna-strand:nth-child(5) { left: 30%; animation-delay: -2s; }
+        .dna-strand:nth-child(6) { left: 35%; animation-delay: -2.5s; }
+        .dna-strand:nth-child(7) { left: 40%; animation-delay: -3s; }
+        .dna-strand:nth-child(8) { left: 45%; animation-delay: -3.5s; }
+        .dna-strand:nth-child(9) { left: 50%; animation-delay: -4s; }
+        .dna-strand:nth-child(10) { left: 55%; animation-delay: -4.5s; }
+        .dna-strand:nth-child(11) { left: 60%; animation-delay: -5s; }
+        .dna-strand:nth-child(12) { left: 65%; animation-delay: -5.5s; }
+        .dna-strand:nth-child(13) { left: 70%; animation-delay: -6s; }
+        .dna-strand:nth-child(14) { left: 75%; animation-delay: -6.5s; }
+        .dna-strand:nth-child(15) { left: 80%; animation-delay: -7s; }
+        .dna-strand:nth-child(16) { left: 85%; animation-delay: -7.5s; }
+        .dna-strand:nth-child(17) { left: 90%; animation-delay: -8s; }
+
+        @keyframes dnaRotate {
+            0% { transform: rotateY(0deg) translateZ(0px); }
+            50% { transform: rotateY(180deg) translateZ(50px); }
+            100% { transform: rotateY(360deg) translateZ(0px); }
+        }
+
+        /* Floating Islands */
+        .floating-islands {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .island {
+            position: absolute;
+            background: radial-gradient(ellipse at center, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            animation: islandFloat 15s ease-in-out infinite;
+        }
+
+        .island-1 {
+            width: 200px;
+            height: 120px;
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .island-2 {
+            width: 150px;
+            height: 90px;
+            top: 70%;
+            right: 10%;
+            animation-delay: 3s;
+        }
+
+        .island-3 {
+            width: 180px;
+            height: 110px;
+            top: 20%;
+            right: 20%;
+            animation-delay: 6s;
+        }
+
+        .island-4 {
+            width: 120px;
+            height: 80px;
+            top: 80%;
+            left: 15%;
+            animation-delay: 9s;
+        }
+
+        @keyframes islandFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(2deg); }
+            50% { transform: translateY(-10px) rotate(-1deg); }
+            75% { transform: translateY(-15px) rotate(1deg); }
+        }
+
+        /* Quantum Particles */
+        .quantum-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .quantum-particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            animation: quantumMove 8s linear infinite;
+        }
+
+        .quantum-particle:nth-child(1) { left: 5%; animation-delay: 0s; }
+        .quantum-particle:nth-child(2) { left: 15%; animation-delay: 1s; }
+        .quantum-particle:nth-child(3) { left: 25%; animation-delay: 2s; }
+        .quantum-particle:nth-child(4) { left: 35%; animation-delay: 3s; }
+        .quantum-particle:nth-child(5) { left: 45%; animation-delay: 4s; }
+        .quantum-particle:nth-child(6) { left: 55%; animation-delay: 5s; }
+        .quantum-particle:nth-child(7) { left: 65%; animation-delay: 6s; }
+        .quantum-particle:nth-child(8) { left: 75%; animation-delay: 7s; }
+        .quantum-particle:nth-child(9) { left: 85%; animation-delay: 8s; }
+        .quantum-particle:nth-child(10) { left: 95%; animation-delay: 9s; }
+
+        @keyframes quantumMove {
+            0% {
+                top: 100%;
+                opacity: 0;
+                transform: scale(0) rotate(0deg);
+            }
+            10% {
+                opacity: 1;
+                transform: scale(1) rotate(36deg);
+            }
+            90% {
+                opacity: 1;
+                transform: scale(1) rotate(324deg);
+            }
+            100% {
+                top: 0;
+                opacity: 0;
+                transform: scale(0) rotate(360deg);
+            }
+        }
+
+        /* Neural Network */
+        .neural-network {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+        }
+
+        .neural-node {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            animation: neuralPulse 4s ease-in-out infinite;
+        }
+
+        .neural-node:nth-child(1) { top: 20%; left: 20%; animation-delay: 0s; }
+        .neural-node:nth-child(2) { top: 30%; left: 40%; animation-delay: 0.5s; }
+        .neural-node:nth-child(3) { top: 50%; left: 30%; animation-delay: 1s; }
+        .neural-node:nth-child(4) { top: 60%; left: 60%; animation-delay: 1.5s; }
+        .neural-node:nth-child(5) { top: 40%; left: 70%; animation-delay: 2s; }
+        .neural-node:nth-child(6) { top: 70%; left: 80%; animation-delay: 2.5s; }
+        .neural-node:nth-child(7) { top: 80%; left: 40%; animation-delay: 3s; }
+        .neural-node:nth-child(8) { top: 10%; left: 80%; animation-delay: 3.5s; }
+
+        @keyframes neuralPulse {
+            0%, 100% { transform: scale(1); opacity: 0.6; }
+            50% { transform: scale(2); opacity: 1; }
+        }
+
+        /* Neural Connections */
+        .neural-connection {
+            position: absolute;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: neuralFlow 3s ease-in-out infinite;
+        }
+
+        .neural-connection:nth-child(9) {
+            top: 23%; left: 23%; width: 17%; transform: rotate(45deg);
+            animation-delay: 0s;
+        }
+
+        .neural-connection:nth-child(10) {
+            top: 33%; left: 43%; width: 15%; transform: rotate(-30deg);
+            animation-delay: 0.5s;
+        }
+
+        .neural-connection:nth-child(11) {
+            top: 53%; left: 33%; width: 20%; transform: rotate(60deg);
+            animation-delay: 1s;
+        }
+
+        @keyframes neuralFlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-trail {
+            position: fixed;
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.3s ease;
+        }
+
+        /* Registration Container */
+        .registration-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 
+                0 25px 45px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .registration-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 35px 55px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+        }
+
+        .registration-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .registration-header h2 {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            animation: titleGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); }
+            50% { text-shadow: 0 2px 20px rgba(255, 255, 255, 0.5); }
+        }
+
+        .registration-header p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 15px 20px;
+            font-size: 0.95rem;
+            color: white;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .form-control::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .form-control:focus {
+            border-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .form-control:focus::placeholder {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        label {
+            color: white;
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            padding: 15px 30px;
+            font-weight: 600;
+            font-size: 1rem;
+            color: white;
+            width: 100%;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-register::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn-register:hover::before {
+            left: 100%;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2));
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 10px 20px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .back-link a:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-5px);
+        }
+
+        .alert {
+            border-radius: 12px;
+            border: none;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .error-message {
+            background: rgba(220, 53, 69, 0.2);
+            color: #ff6b6b;
+            border: 1px solid rgba(220, 53, 69, 0.3);
+        }
+
+        .success-message {
+            background: rgba(40, 167, 69, 0.2);
+            color: #51cf66;
+            border: 1px solid rgba(40, 167, 69, 0.3);
+        }
+
+        .form-text {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 5px;
+        }
+
+        .password-requirements {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .password-requirements h6 {
+            color: white;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .password-requirements ul {
+            margin-bottom: 0;
+            padding-left: 20px;
+        }
+
+        .password-requirements li {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.85rem;
+            margin-bottom: 5px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .custom-cursor, .cursor-trail {
+                display: none;
+            }
+            
+            body {
+                cursor: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+    <div class="cursor-trail"></div>
+
+    <!-- Unique Animated Background -->
+    <div class="dna-container">
+        <div class="dna-strand"></div>
+        <div class="dna-strand"></div>
+        <div class="dna-strand"></div>
+        <div class="dna-strand"></div>
+        <div class="dna-strand"></div>
+        <div class="dna-strand"></div>
+        <div class="dna-strand"></div>
+        <div class="dna-strand"></div>
+        <div class="dna-strand"></div>
+        <div class="dna-strand"></div>
+        <div class="dna-strand"></div>
+        <div class="dna-strand"></div>
+        <div class="dna-strand"></div>
+        <div class="dna-strand"></div>
+        <div class="dna-strand"></div>
+        <div class="dna-strand"></div>
+        <div class="dna-strand"></div>
+    </div>
+
+    <div class="floating-islands">
+        <div class="island island-1"></div>
+        <div class="island island-2"></div>
+        <div class="island island-3"></div>
+        <div class="island island-4"></div>
+    </div>
+
+    <div class="quantum-particles">
+        <div class="quantum-particle"></div>
+        <div class="quantum-particle"></div>
+        <div class="quantum-particle"></div>
+        <div class="quantum-particle"></div>
+        <div class="quantum-particle"></div>
+        <div class="quantum-particle"></div>
+        <div class="quantum-particle"></div>
+        <div class="quantum-particle"></div>
+        <div class="quantum-particle"></div>
+        <div class="quantum-particle"></div>
+    </div>
+
+    <div class="neural-network">
+        <div class="neural-node"></div>
+        <div class="neural-node"></div>
+        <div class="neural-node"></div>
+        <div class="neural-node"></div>
+        <div class="neural-node"></div>
+        <div class="neural-node"></div>
+        <div class="neural-node"></div>
+        <div class="neural-node"></div>
+        <div class="neural-connection"></div>
+        <div class="neural-connection"></div>
+        <div class="neural-connection"></div>
+    </div>
+
+    <div class="registration-container">
+        <div class="registration-header">
+            <h2><i class="fas fa-user-shield"></i> Admin Registration</h2>
+            <p>Submit your request to become an administrator</p>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'error' %}error-message{% else %}success-message{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="{{ form.username.id_for_label }}">Username *</label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                            <div class="text-danger small">{{ form.username.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="{{ form.email.id_for_label }}">Email Address *</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            <div class="text-danger small">{{ form.email.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="{{ form.first_name.id_for_label }}">First Name *</label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}
+                            <div class="text-danger small">{{ form.first_name.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="{{ form.last_name.id_for_label }}">Last Name *</label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}
+                            <div class="text-danger small">{{ form.last_name.errors.0 }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.phone_number.id_for_label }}">Phone Number *</label>
+                {{ form.phone_number }}
+                {% if form.phone_number.errors %}
+                    <div class="text-danger small">{{ form.phone_number.errors.0 }}</div>
+                {% endif %}
+                <div class="form-text">
+                    <i class="fas fa-info-circle"></i> 
+                    Enter a valid Indian mobile number (10 digits starting with 6, 7, 8, or 9)
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="{{ form.address.id_for_label }}">Address *</label>
+                {{ form.address }}
+                {% if form.address.errors %}
+                    <div class="text-danger small">{{ form.address.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <div class="password-requirements">
+                <h6><i class="fas fa-info-circle"></i> Important Information</h6>
+                <ul>
+                    <li>Your registration request will be reviewed by the super administrator</li>
+                    <li>You will receive an email notification once your request is reviewed</li>
+                    <li>If approved, you will receive login credentials via email</li>
+                    <li>Please ensure all information provided is accurate and complete</li>
+                </ul>
+            </div>
+
+            <button type="submit" class="btn btn-register">
+                <i class="fas fa-paper-plane"></i> Submit Registration Request
+            </button>
+        </form>
+
+        <div class="back-link">
+            <a href="{% url 'choose_login' %}">
+                <i class="fas fa-arrow-left"></i> Back to Login Options
+            </a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script>
+        // Interactive Mouse Effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const cursor = document.querySelector('.custom-cursor');
+            const cursorTrail = document.querySelector('.cursor-trail');
+            const container = document.querySelector('.registration-container');
+            const islands = document.querySelectorAll('.island');
+            const neuralNodes = document.querySelectorAll('.neural-node');
+            
+            let mouseX = 0;
+            let mouseY = 0;
+            let cursorX = 0;
+            let cursorY = 0;
+            let trailX = 0;
+            let trailY = 0;
+            
+            // Mouse move event
+            document.addEventListener('mousemove', function(e) {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                
+                // Update cursor position
+                cursor.style.left = mouseX - 10 + 'px';
+                cursor.style.top = mouseY - 10 + 'px';
+                
+                // Magnetic effect on islands
+                islands.forEach(island => {
+                    const rect = island.getBoundingClientRect();
+                    const islandCenterX = rect.left + rect.width / 2;
+                    const islandCenterY = rect.top + rect.height / 2;
+                    
+                    const distanceX = mouseX - islandCenterX;
+                    const distanceY = mouseY - islandCenterY;
+                    const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+                    
+                    if (distance < 250) {
+                        const force = (250 - distance) / 250;
+                        const moveX = distanceX * force * 0.15;
+                        const moveY = distanceY * force * 0.15;
+                        
+                        island.style.transform = `translate(${moveX}px, ${moveY}px) rotate(${moveX * 0.1}deg)`;
+                    } else {
+                        island.style.transform = 'translate(0px, 0px) rotate(0deg)';
+                    }
+                });
+                
+                // Neural network interaction
+                neuralNodes.forEach(node => {
+                    const rect = node.getBoundingClientRect();
+                    const nodeCenterX = rect.left + rect.width / 2;
+                    const nodeCenterY = rect.top + rect.height / 2;
+                    
+                    const distanceX = mouseX - nodeCenterX;
+                    const distanceY = mouseY - nodeCenterY;
+                    const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+                    
+                    if (distance < 100) {
+                        const force = (100 - distance) / 100;
+                        node.style.transform = `scale(${1 + force * 0.5})`;
+                        node.style.background = `rgba(255, 255, 255, ${0.6 + force * 0.4})`;
+                    } else {
+                        node.style.transform = 'scale(1)';
+                        node.style.background = 'rgba(255, 255, 255, 0.6)';
+                    }
+                });
+                
+                // Container hover effect
+                if (container) {
+                    const rect = container.getBoundingClientRect();
+                    const containerCenterX = rect.left + rect.width / 2;
+                    const containerCenterY = rect.top + rect.height / 2;
+                    
+                    const distanceX = mouseX - containerCenterX;
+                    const distanceY = mouseY - containerCenterY;
+                    const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+                    
+                    if (distance < 400) {
+                        const force = (400 - distance) / 400;
+                        const moveX = distanceX * force * 0.03;
+                        const moveY = distanceY * force * 0.03;
+                        
+                        container.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                    } else {
+                        container.style.transform = 'translate(0px, 0px)';
+                    }
+                }
+            });
+            
+            // Cursor trail animation
+            function animateCursor() {
+                cursorX += (mouseX - cursorX) * 0.1;
+                cursorY += (mouseY - cursorY) * 0.1;
+                
+                trailX += (cursorX - trailX) * 0.15;
+                trailY += (cursorY - trailY) * 0.15;
+                
+                cursorTrail.style.left = trailX - 4 + 'px';
+                cursorTrail.style.top = trailY - 4 + 'px';
+                
+                requestAnimationFrame(animateCursor);
+            }
+            animateCursor();
+            
+            // Form field focus effects
+            const formControls = document.querySelectorAll('.form-control');
+            formControls.forEach(control => {
+                control.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'scale(1.02)';
+                });
+                
+                control.addEventListener('blur', function() {
+                    this.parentElement.style.transform = 'scale(1)';
+                });
+            });
+            
+            // Button click effect
+            const registerBtn = document.querySelector('.btn-register');
+            if (registerBtn) {
+                registerBtn.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    const x = e.clientX - rect.left - size / 2;
+                    const y = e.clientY - rect.top - size / 2;
+                    
+                    ripple.style.width = ripple.style.height = size + 'px';
+                    ripple.style.left = x + 'px';
+                    ripple.style.top = y + 'px';
+                    ripple.classList.add('ripple');
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            }
+        });
+        
+        // Add ripple effect styles
+        const style = document.createElement('style');
+        style.textContent = `
+            .btn-register {
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .ripple {
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.3);
+                transform: scale(0);
+                animation: ripple-animation 0.6s linear;
+                pointer-events: none;
+            }
+            
+            @keyframes ripple-animation {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html> 

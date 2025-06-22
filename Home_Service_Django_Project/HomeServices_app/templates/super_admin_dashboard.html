@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Super Admin Dashboard - Home Services</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 14px; }
+        .navbar { background: linear-gradient(135deg, #dc3545 0%, #c82333 100%); box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+        .navbar-brand { color: white !important; font-weight: 600; font-size: 1.2rem; }
+        .navbar-nav .nav-link { color: rgba(255, 255, 255, 0.9) !important; }
+        .navbar-nav .nav-link:hover { color: white !important; }
+        .main-content { padding: 20px 0; }
+        .dashboard-header { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+        .dashboard-header h1 { font-size: 1.8rem; margin-bottom: 5px; }
+        .dashboard-header p { font-size: 0.9rem; margin-bottom: 0; }
+        .stats-card { background: white; border-radius: 8px; padding: 20px; margin-bottom: 15px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); transition: transform 0.3s ease; }
+        .stats-card:hover { transform: translateY(-3px); }
+        .stats-icon { font-size: 1.8rem; margin-bottom: 10px; }
+        .stats-number { font-size: 1.5rem; font-weight: 600; margin-bottom: 3px; }
+        .stats-label { color: #6c757d; font-size: 0.8rem; }
+        .pending-icon { color: #ffc107; }
+        .approved-icon { color: #28a745; }
+        .rejected-icon { color: #dc3545; }
+        .total-icon { color: #17a2b8; }
+        .completed-icon { color: #28a745; }
+        .users-icon { color: #6f42c1; }
+        .section-card { background: white; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); }
+        .section-title { color: #333; font-weight: 600; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid #f8f9fa; font-size: 1.2rem; }
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .feature-card { background: #f8f9fa; border-radius: 6px; padding: 15px; text-align: center; transition: all 0.3s ease; border: 2px solid transparent; }
+        .feature-card:hover { background: white; border-color: #dc3545; transform: translateY(-2px); box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1); }
+        .feature-icon { font-size: 1.5rem; margin-bottom: 10px; color: #dc3545; }
+        .feature-title { font-weight: 600; margin-bottom: 8px; color: #333; font-size: 0.95rem; }
+        .feature-description { color: #6c757d; font-size: 0.8rem; margin-bottom: 12px; }
+        .btn-feature { background-color: #dc3545; border-color: #dc3545; color: white; padding: 6px 15px; font-size: 0.8rem; border-radius: 4px; text-decoration: none; display: inline-block; transition: all 0.3s ease; }
+        .btn-feature:hover { background-color: #c82333; border-color: #c82333; color: white; text-decoration: none; }
+        .permission-toggle { position: relative; display: inline-block; width: 50px; height: 28px; }
+        .permission-toggle input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 28px; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #28a745; }
+        input:checked + .slider:before { transform: translateX(22px); }
+        .request-card { border: 1px solid #e9ecef; border-radius: 6px; padding: 15px; margin-bottom: 12px; transition: all 0.3s ease; }
+        .request-card:hover { box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1); }
+        .request-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
+        .request-name { font-weight: 600; color: #333; margin-bottom: 3px; font-size: 0.95rem; }
+        .request-email { color: #6c757d; font-size: 0.8rem; }
+        .request-date { color: #6c757d; font-size: 0.75rem; }
+        .request-actions { display: flex; gap: 8px; }
+        .btn-approve { background-color: #28a745; border-color: #28a745; color: white; padding: 4px 12px; font-size: 0.75rem; }
+        .btn-reject { background-color: #dc3545; border-color: #dc3545; color: white; padding: 4px 12px; font-size: 0.75rem; }
+        .btn-approve:hover, .btn-reject:hover { color: white; opacity: 0.9; }
+        .status-badge { padding: 4px 8px; border-radius: 15px; font-size: 0.75rem; font-weight: 500; }
+        .status-pending { background-color: #fff3cd; color: #856404; }
+        .status-approved { background-color: #d4edda; color: #155724; }
+        .status-rejected { background-color: #f8d7da; color: #721c24; }
+        .no-requests { text-align: center; color: #6c757d; padding: 30px; }
+        .no-requests i { font-size: 2rem; }
+        .logout-btn { background-color: transparent; border: 1px solid rgba(255, 255, 255, 0.5); color: white; font-size: 0.8rem; }
+        .logout-btn:hover { background-color: rgba(255, 255, 255, 0.1); color: white; }
+        .btn-outline-primary { color: #007bff; border-color: #007bff; font-size: 0.8rem; }
+        .btn-outline-primary:hover { color: white; background-color: #007bff; border-color: #007bff; }
+        .password-info-toggle { color: #007bff; text-decoration: none; }
+        .password-info-toggle:hover { color: #0056b3; text-decoration: none; }
+        .tab-content { margin-top: 15px; }
+        .nav-tabs .nav-link { color: #6c757d; border: none; border-bottom: 2px solid transparent; font-size: 0.9rem; padding: 8px 15px; }
+        .nav-tabs .nav-link.active { color: #dc3545; border-bottom: 2px solid #dc3545; }
+        .alert { font-size: 0.85rem; padding: 12px; }
+        .alert h6 { font-size: 0.9rem; margin-bottom: 8px; }
+        .list-group-item { padding: 10px 15px; }
+        .list-group-item strong { font-size: 0.9rem; }
+        .list-group-item small { font-size: 0.8rem; }
+        .badge { font-size: 0.7rem; }
+        .card-body { padding: 15px; }
+        .form-group { margin-bottom: 12px; }
+        .form-group label { font-size: 0.85rem; }
+        .btn-sm { font-size: 0.75rem; padding: 4px 8px; }
+        .navbar-text { font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-user-shield"></i> Super Admin Dashboard</a>
+            <div class="navbar-nav ml-auto">
+                <span class="navbar-text mr-3">Welcome, {{ user.first_name }} {{ user.last_name }}</span>
+                <a href="{% url 'logout' %}" class="btn btn-outline-light btn-sm logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container main-content">
+        <div class="dashboard-header">
+            <h1><i class="fas fa-tachometer-alt"></i> Super Admin Dashboard</h1>
+            <p class="text-muted">Complete system administration and admin management</p>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="text-center">
+                        <div class="stats-icon total-icon"><i class="fas fa-clipboard-list"></i></div>
+                        <div class="stats-number">{{ total_requests }}</div>
+                        <div class="stats-label">Total Requests</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="text-center">
+                        <div class="stats-icon completed-icon"><i class="fas fa-check-circle"></i></div>
+                        <div class="stats-number">{{ completed_requests }}</div>
+                        <div class="stats-label">Completed Requests</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="text-center">
+                        <div class="stats-icon pending-icon"><i class="fas fa-clock"></i></div>
+                        <div class="stats-number">{{ pending_requests_count }}</div>
+                        <div class="stats-label">Pending Requests</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stats-card">
+                    <div class="text-center">
+                        <div class="stats-icon users-icon"><i class="fas fa-users"></i></div>
+                        <div class="stats-number">{{ total_users }}</div>
+                        <div class="stats-label">Total Users</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <ul class="nav nav-tabs" id="dashboardTabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="admin-management-tab" data-toggle="tab" href="#admin-management" role="tab">
+                        <i class="fas fa-user-shield"></i> Admin Management
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="system-features-tab" data-toggle="tab" href="#system-features" role="tab">
+                        <i class="fas fa-cogs"></i> System Features
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="admin-permissions-tab" data-toggle="tab" href="#admin-permissions" role="tab">
+                        <i class="fas fa-lock"></i> Admin Permissions
+                    </a>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="dashboardTabContent">
+                <div class="tab-pane fade show active" id="admin-management" role="tabpanel">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h3 class="section-title"><i class="fas fa-clock"></i> Pending Admin Requests</h3>
+                            {% if pending_requests %}
+                                {% for request in pending_requests %}
+                                    <div class="request-card">
+                                        <div class="request-header">
+                                            <div>
+                                                <div class="request-name">{{ request.first_name }} {{ request.last_name }}</div>
+                                                <div class="request-email">{{ request.email }}</div>
+                                                <div class="request-date">Submitted: {{ request.created_at|date:"M d, Y H:i" }}</div>
+                                            </div>
+                                            <div class="request-actions">
+                                                <a href="{% url 'admin_request_action' request.id 'approve' %}" class="btn btn-approve" onclick="return confirm('Are you sure you want to approve this request?')">
+                                                    <i class="fas fa-check"></i> Approve
+                                                </a>
+                                                <a href="{% url 'admin_request_action' request.id 'reject' %}" class="btn btn-reject" onclick="return confirm('Are you sure you want to reject this request?')">
+                                                    <i class="fas fa-times"></i> Reject
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <strong>Username:</strong> {{ request.username }}<br>
+                                                <strong>Phone:</strong> {{ request.phone_number }}
+                                            </div>
+                                            <div class="col-md-6">
+                                                <strong>Address:</strong> {{ request.address|truncatewords:10 }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="no-requests">
+                                    <i class="fas fa-inbox text-muted mb-3"></i>
+                                    <p>No pending requests at the moment.</p>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6">
+                            <h3 class="section-title"><i class="fas fa-check-circle"></i> Approved Admins</h3>
+                            {% if approved_requests %}
+                                {% for request in approved_requests %}
+                                    <div class="request-card">
+                                        <div class="request-header">
+                                            <div>
+                                                <div class="request-name">{{ request.first_name }} {{ request.last_name }}</div>
+                                                <div class="request-email">{{ request.email }}</div>
+                                                <div class="request-date">Approved: {{ request.updated_at|date:"M d, Y H:i" }}</div>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <span class="status-badge status-approved mr-3">Approved</span>
+                                                <a href="{% url 'admin_edit' request.id %}" class="btn btn-outline-primary btn-sm">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <strong>Username:</strong> {{ request.username }}<br>
+                                                <strong>Phone:</strong> {{ request.phone_number }}<br>
+                                                <strong>Password:</strong> 
+                                                <span class="text-muted">(Stored securely)</span>
+                                                <button type="button" class="btn btn-link btn-sm p-0 ml-2" onclick="showPasswordInfo('{{ request.id }}')">
+                                                    <i class="fas fa-info-circle"></i> Info
+                                                </button>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <strong>Address:</strong> {{ request.address|truncatewords:10 }}
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                            <div class="alert alert-info" id="password-info-{{ request.id }}" style="display: none;">
+                                                <h6><i class="fas fa-shield-alt"></i> Password Information</h6>
+                                                <p class="mb-1"><strong>Status:</strong> Password is stored securely in the database</p>
+                                                <p class="mb-1"><strong>Access:</strong> Admin can login using their username and password</p>
+                                                <p class="mb-0"><strong>Change:</strong> Use the Edit button above to change the password</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="no-requests">
+                                    <i class="fas fa-check-circle text-muted mb-3"></i>
+                                    <p>No approved admins yet.</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="system-features" role="tabpanel">
+                    <h3 class="section-title"><i class="fas fa-cogs"></i> System Management Features</h3>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-users"></i></div>
+                            <div class="feature-title">Manage Workers</div>
+                            <div class="feature-description">View, verify, and manage all worker accounts</div>
+                            <a href="{% url 'manageworker' %}" class="btn-feature">Access</a>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-user-friends"></i></div>
+                            <div class="feature-title">Manage Users</div>
+                            <div class="feature-description">View and manage all registered users</div>
+                            <a href="{% url 'manageusers' %}" class="btn-feature">Access</a>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-tools"></i></div>
+                            <div class="feature-title">Manage Services</div>
+                            <div class="feature-description">Add, edit, and manage service categories</div>
+                            <a href="{% url 'ManageServices' %}" class="btn-feature">Access</a>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-map-marker-alt"></i></div>
+                            <div class="feature-title">Address Management</div>
+                            <div class="feature-description">Manage countries, states, and cities</div>
+                            <a href="{% url 'ManageCountry' %}" class="btn-feature">Access</a>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-tasks"></i></div>
+                            <div class="feature-title">Service Requests</div>
+                            <div class="feature-description">View and manage all service requests</div>
+                            <a href="{% url 'ViewRequests' %}" class="btn-feature">Access</a>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-comments"></i></div>
+                            <div class="feature-title">Feedbacks</div>
+                            <div class="feature-description">View and manage user feedbacks</div>
+                            <a href="{% url 'viewfeedbacks' %}" class="btn-feature">Access</a>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-reply"></i></div>
+                            <div class="feature-title">Responses</div>
+                            <div class="feature-description">View and manage service responses</div>
+                            <a href="{% url 'viewresponse' %}" class="btn-feature">Access</a>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-shopping-cart"></i></div>
+                            <div class="feature-title">Sales Management</div>
+                            <div class="feature-description">Manage products and sales categories</div>
+                            <a href="{% url 'product_list' %}" class="btn-feature">Access</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="admin-permissions" role="tabpanel">
+                    <h3 class="section-title"><i class="fas fa-lock"></i> Admin Access Permissions</h3>
+                    <div class="alert alert-info">
+                        <h6><i class="fas fa-info-circle"></i> Permission Management</h6>
+                        <p class="mb-0">Control which features and pages each admin can access. Toggle permissions for individual admins or set global permissions.</p>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5><i class="fas fa-user-shield"></i> Admin List</h5>
+                            {% if approved_requests %}
+                                <div class="list-group">
+                                    {% for request in approved_requests %}
+                                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <strong>{{ request.first_name }} {{ request.last_name }}</strong><br>
+                                                <small class="text-muted">{{ request.email }}</small>
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <span class="badge badge-success mr-2">Active</span>
+                                                <button class="btn btn-sm btn-outline-primary" onclick="managePermissions('{{ request.id }}')">
+                                                    <i class="fas fa-cog"></i> Permissions
+                                                </button>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="text-center text-muted">
+                                    <i class="fas fa-users mb-3"></i>
+                                    <p>No approved admins to manage permissions for.</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <h5><i class="fas fa-cogs"></i> Global Permissions</h5>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label class="d-flex justify-content-between align-items-center">
+                                            <span><i class="fas fa-users"></i> Manage Workers</span>
+                                            <label class="permission-toggle">
+                                                <input type="checkbox" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="d-flex justify-content-between align-items-center">
+                                            <span><i class="fas fa-user-friends"></i> Manage Users</span>
+                                            <label class="permission-toggle">
+                                                <input type="checkbox" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="d-flex justify-content-between align-items-center">
+                                            <span><i class="fas fa-tools"></i> Manage Services</span>
+                                            <label class="permission-toggle">
+                                                <input type="checkbox" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="d-flex justify-content-between align-items-center">
+                                            <span><i class="fas fa-map-marker-alt"></i> Address Management</span>
+                                            <label class="permission-toggle">
+                                                <input type="checkbox" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="d-flex justify-content-between align-items-center">
+                                            <span><i class="fas fa-tasks"></i> Service Requests</span>
+                                            <label class="permission-toggle">
+                                                <input type="checkbox" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="d-flex justify-content-between align-items-center">
+                                            <span><i class="fas fa-comments"></i> Feedbacks</span>
+                                            <label class="permission-toggle">
+                                                <input type="checkbox" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="d-flex justify-content-between align-items-center">
+                                            <span><i class="fas fa-reply"></i> Responses</span>
+                                            <label class="permission-toggle">
+                                                <input type="checkbox" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </label>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="d-flex justify-content-between align-items-center">
+                                            <span><i class="fas fa-shopping-cart"></i> Sales Management</span>
+                                            <label class="permission-toggle">
+                                                <input type="checkbox" checked>
+                                                <span class="slider"></span>
+                                            </label>
+                                        </label>
+                                    </div>
+                                    <button class="btn btn-primary btn-block">
+                                        <i class="fas fa-save"></i> Save Global Permissions
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
+    <script>
+        function showPasswordInfo(requestId) {
+            const passwordInfo = document.getElementById('password-info-' + requestId);
+            if (passwordInfo.style.display === 'none') {
+                passwordInfo.style.display = 'block';
+            } else {
+                passwordInfo.style.display = 'none';
+            }
+        }
+
+        function managePermissions(adminId) {
+            alert('Permission management for admin ID: ' + adminId + ' - This feature will be implemented to control individual admin access to different sections.');
+        }
+
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+    </script>
+</body>
+</html> 

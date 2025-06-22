@@ -1,0 +1,145 @@
+{% extends "userpages/user_header_only.html" %}
+{% load static %}
+{% block content %}
+<style>
+.shop-category-section {
+    margin-bottom: 40px;
+}
+.shop-category-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+    font-size: 2rem;
+    font-weight: bold;
+}
+.shop-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+.shop-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+.shop-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+.shop-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+.shop-info {
+    padding: 20px;
+    text-align: center;
+}
+.shop-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+}
+.shop-owner {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+.shop-phone {
+    color: #888;
+    font-size: 0.85rem;
+}
+.no-shops {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 40px;
+}
+</style>
+
+<div class="container mt-4">
+    <h1 class="text-center mb-5">Our Shops</h1>
+    
+    <!-- Grocery Shops -->
+    <div class="shop-category-section">
+        <h2 class="shop-category-title">Grocery Shops</h2>
+        {% if grocery_shops %}
+            <div class="shop-grid">
+                {% for shop in grocery_shops %}
+                    <a href="{% url 'shop_products' shop.id %}" class="shop-card">
+                        {% if shop.image %}
+                            <img src="{{ shop.image.url }}" alt="{{ shop.name }}" class="shop-image">
+                        {% else %}
+                            <img src="https://via.placeholder.com/250x200?text=No+Image" alt="No Image" class="shop-image">
+                        {% endif %}
+                        <div class="shop-info">
+                            <div class="shop-name">{{ shop.name }}</div>
+                            <div class="shop-owner">{{ shop.owner_name }}</div>
+                            <div class="shop-phone">{{ shop.owner_phone_number }}</div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-shops">No grocery shops available at the moment.</div>
+        {% endif %}
+    </div>
+
+    <!-- Electricals Shops -->
+    <div class="shop-category-section">
+        <h2 class="shop-category-title">Electrical Shops</h2>
+        {% if electricals_shops %}
+            <div class="shop-grid">
+                {% for shop in electricals_shops %}
+                    <a href="{% url 'shop_products' shop.id %}" class="shop-card">
+                        {% if shop.image %}
+                            <img src="{{ shop.image.url }}" alt="{{ shop.name }}" class="shop-image">
+                        {% else %}
+                            <img src="https://via.placeholder.com/250x200?text=No+Image" alt="No Image" class="shop-image">
+                        {% endif %}
+                        <div class="shop-info">
+                            <div class="shop-name">{{ shop.name }}</div>
+                            <div class="shop-owner">{{ shop.owner_name }}</div>
+                            <div class="shop-phone">{{ shop.owner_phone_number }}</div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-shops">No electrical shops available at the moment.</div>
+        {% endif %}
+    </div>
+
+    <!-- Plumbing Shops -->
+    <div class="shop-category-section">
+        <h2 class="shop-category-title">Plumbing Shops</h2>
+        {% if plumbing_shops %}
+            <div class="shop-grid">
+                {% for shop in plumbing_shops %}
+                    <a href="{% url 'shop_products' shop.id %}" class="shop-card">
+                        {% if shop.image %}
+                            <img src="{{ shop.image.url }}" alt="{{ shop.name }}" class="shop-image">
+                        {% else %}
+                            <img src="https://via.placeholder.com/250x200?text=No+Image" alt="No Image" class="shop-image">
+                        {% endif %}
+                        <div class="shop-info">
+                            <div class="shop-name">{{ shop.name }}</div>
+                            <div class="shop-owner">{{ shop.owner_name }}</div>
+                            <div class="shop-phone">{{ shop.owner_phone_number }}</div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-shops">No plumbing shops available at the moment.</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 

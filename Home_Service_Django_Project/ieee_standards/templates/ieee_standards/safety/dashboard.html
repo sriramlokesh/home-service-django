@@ -1,0 +1,120 @@
+{% extends 'ieee_standards/base.html' %}
+
+{% block subtitle %}Safety Dashboard{% endblock %}
+{% block page_title %}Safety Monitoring Dashboard{% endblock %}
+
+{% block header_actions %}
+<a href="{% url 'ieee_standards:inspection-create' %}" class="btn btn-primary">
+    <i class="fas fa-plus"></i> New Inspection
+</a>
+{% endblock %}
+
+{% block ieee_content %}
+<div class="dashboard-grid">
+    <!-- Grounding Systems Section -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3>Grounding Systems</h3>
+            <a href="{% url 'ieee_standards:grounding-list' %}" class="btn btn-sm btn-outline-primary">View All</a>
+        </div>
+        <div class="card-body">
+            {% if safety_items.grounding_systems %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Location</th>
+                        <th>Status</th>
+                        <th>Last Test</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for system in safety_items.grounding_systems %}
+                    <tr>
+                        <td>{{ system.location }}</td>
+                        <td><span class="badge badge-{{ system.status|lower }}">{{ system.status }}</span></td>
+                        <td>{{ system.last_test_date|date:"M d, Y" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-muted">No grounding systems found.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Recent Inspections Section -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3>Recent Inspections</h3>
+        </div>
+        <div class="card-body">
+            {% if safety_items.recent_inspections %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Location</th>
+                        <th>Inspector</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for inspection in safety_items.recent_inspections %}
+                    <tr>
+                        <td>{{ inspection.location }}</td>
+                        <td>{{ inspection.inspector.get_full_name }}</td>
+                        <td>{{ inspection.inspection_date|date:"M d, Y" }}</td>
+                        <td>
+                            {% if inspection.is_compliant %}
+                            <span class="badge badge-success">Compliant</span>
+                            {% else %}
+                            <span class="badge badge-danger">Non-Compliant</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-muted">No recent inspections found.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Active Alerts Section -->
+    <div class="dashboard-card">
+        <div class="card-header">
+            <h3>Active Safety Alerts</h3>
+        </div>
+        <div class="card-body">
+            {% if safety_items.active_alerts %}
+            <div class="alert-list">
+                {% for alert in safety_items.active_alerts %}
+                <div class="alert alert-{{ alert.severity|lower }}">
+                    <div class="alert-header">
+                        <strong>{{ alert.alert_type }}</strong>
+                        <span class="badge badge-{{ alert.severity|lower }}">{{ alert.severity }}</span>
+                    </div>
+                    <p>{{ alert.description }}</p>
+                    <small>{{ alert.timestamp|date:"M d, Y H:i" }} - {{ alert.location }}</small>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <p class="text-success">No active safety alerts.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+{{ block.super }}
+<script>
+    // Refresh dashboard data every 5 minutes
+    setInterval(function() {
+        location.reload();
+    }, 300000);
+</script>
+{% endblock %} 

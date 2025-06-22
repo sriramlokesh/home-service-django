@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .content {
+            padding: 20px;
+            background-color: #f9f9f9;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>New Login Alert</h1>
+        </div>
+        <div class="content">
+            <p>Hello {{ user.username }},</p>
+            <p>We detected a new login to your All-SERVED-S account.</p>
+            
+            <h3>Login Details:</h3>
+            <p>You logged in on: {{ login_time }}</p>
+            
+            <p>If this wasn't you, please contact our support team immediately at support@all-served-s.com</p>
+        </div>
+        <div class="footer">
+            <p>Best regards,<br>All-SERVED-S Team</p>
+        </div>
+    </div>
+</body>
+</html> 
