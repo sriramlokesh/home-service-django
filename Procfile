@@ -1,1 +1,1 @@
-web: gunicorn Home_Service_Django_Project.wsgi --log-file - 
+web: cd Home_Service_Django_Project && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn HomeServices_project.wsgi 
