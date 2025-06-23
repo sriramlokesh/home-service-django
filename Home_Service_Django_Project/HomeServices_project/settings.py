@@ -11,12 +11,18 @@ SECRET_KEY = '4YCPOWggJFuZ8D7kU6yZ9f5LDPKMgNE2S28WSUQJ7eAHTS8bDcfS-nRQi7xUohSh1U
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.85.229', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['192.168.85.229', 'localhost', '127.0.0.1', 'all-served-services.up.railway.app']
 
 # Add the railway app domain to ALLOWED_HOSTS if it exists
 RAILWAY_PUBLIC_DOMAIN = os.environ.get('RAILWAY_PUBLIC_DOMAIN')
 if RAILWAY_PUBLIC_DOMAIN:
     ALLOWED_HOSTS.append(RAILWAY_PUBLIC_DOMAIN)
+
+# CSRF Trusted Origins for Railway deployment
+CSRF_TRUSTED_ORIGINS = [
+    'https://all-served-services.up.railway.app',
+    'https://web-production-9d0cb.up.railway.app',
+]
 
 # Application definition
 INSTALLED_APPS = [
