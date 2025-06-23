@@ -13,6 +13,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['192.168.85.229', 'localhost', '127.0.0.1']
 
+# Add the railway app domain to ALLOWED_HOSTS if it exists
+RAILWAY_PUBLIC_DOMAIN = os.environ.get('RAILWAY_PUBLIC_DOMAIN')
+if RAILWAY_PUBLIC_DOMAIN:
+    ALLOWED_HOSTS.append(RAILWAY_PUBLIC_DOMAIN)
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
