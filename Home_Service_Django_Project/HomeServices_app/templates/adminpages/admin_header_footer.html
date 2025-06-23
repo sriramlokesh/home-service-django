@@ -73,13 +73,13 @@
                     </li>
                     <li class="menu-title">Manage Data</li><!-- /.menu-title -->
                     <li class="menu-item-has-children dropdown">
-                        <a href="{% url 'manageworker' %}" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-cogs"></i>Workers</a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-cogs"></i>Workers</a>
                         <ul class="sub-menu children dropdown-menu">
                             <li><i class="fa fa-id-badge"></i><a href="{% url 'manageworker' %}">Manage Workers</a></li>
                         </ul>
                     </li>
                     <li class="menu-item-has-children dropdown">
-                        <a href="{% url 'manageusers' %}" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Users</a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-table"></i>Users</a>
                         <ul class="sub-menu children dropdown-menu">
                             <li><i class="fa fa-table"></i><a href="{% url 'manageusers' %}">Manage Users</a></li>
                         </ul>
@@ -89,6 +89,13 @@
                         <ul class="sub-menu children dropdown-menu">
                             <li><i class="menu-icon fa fa-th"></i><a href="{% url 'AddServices' %}">Add Services</a></li>
                             <li><i class="menu-icon fa fa-th"></i><a href="{% url 'ManageServices' %}">Manage Services</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item-has-children dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-shopping-cart"></i>Sales</a>
+                        <ul class="sub-menu children dropdown-menu">
+                            <li><i class="menu-icon fa fa-shopping-cart"></i><a href="{% url 'sales_category' category='grocery' %}">Manage Products</a></li>
+                            <li><i class="menu-icon fa fa-home"></i><a href="{% url 'manage_shops' category='grocery' %}">Manage Shops</a></li>
                         </ul>
                     </li>
                     <li class="menu-item-has-children dropdown">
@@ -102,12 +109,6 @@
 
                     <li class="menu-title">Busisness</li><!-- /.menu-title -->
 
-<!--                    <li class="menu-item-has-children dropdown">-->
-<!--                        <a href="{% url 'ViewRequests' %}" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-tasks"></i>Requests</a>-->
-<!--                        <ul class="sub-menu children dropdown-menu">-->
-<!--                            <li><i class="menu-icon fa fa-fort-awesome"></i><a href="font-fontawesome.html">Font Awesome</a></li>-->
-<!--                            <li><i class="menu-icon ti-themify-logo"></i><a href="font-themify.html">Themefy Icons</a></li>-->
-<!--                        </ul>-->
                     <li>
                         <a href="{% url 'ViewRequests' %}"> <i class="menu-icon fa fa-tasks"></i>Request </a>
                     </li>
@@ -117,16 +118,6 @@
                     <li>
                         <a href="{% url 'viewfeedbacks' %}"> <i class="menu-icon ti-email"></i>Feedbacks </a>
                     </li>
-<!--                    <li class="menu-item-has-children dropdown">-->
-<!--                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-bar-chart"></i>Charts</a>-->
-<!--                        <ul class="sub-menu children dropdown-menu">-->
-<!--                            <li><i class="menu-icon fa fa-line-chart"></i><a href="charts-chartjs.html">Chart JS</a></li>-->
-<!--                            <li><i class="menu-icon fa fa-area-chart"></i><a href="charts-flot.html">Flot Chart</a></li>-->
-<!--                            <li><i class="menu-icon fa fa-pie-chart"></i><a href="charts-peity.html">Peity Chart</a></li>-->
-<!--                        </ul>-->
-<!--                    </li>-->
-
-                   
                 </ul>
             </div><!-- /.navbar-collapse -->
         </nav>

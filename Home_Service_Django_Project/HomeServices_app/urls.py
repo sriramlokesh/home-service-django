@@ -16,7 +16,8 @@ from .forms import stateform
 from .views import *
 
 urlpatterns = [
-    path('', views.home.as_view(), name='index'),
+    path('', views.loading_view, name='loading'),
+    path('home/', views.home.as_view(), name='index'),
     path('index/', views.home.as_view(), name='index_page'),
     path('choose-login/', views.ChooseLogin.as_view(), name='choose_login'),
     path('login/', views.Login.as_view(), name='login_page'),
@@ -120,6 +121,7 @@ urlpatterns = [
     path('sales/<str:category>/add_shop/', views.AddShopView.as_view(), name='add_shop'),
     path('shop/<int:shop_id>/add_product/', views.AddProductToShopView.as_view(), name='add_product_to_shop'),
     path('shop/<int:shop_id>/edit/', views.EditShopView.as_view(), name='edit_shop'),
+    path('shop/<int:shop_id>/delete/', views.DeleteShopView.as_view(), name='delete_shop'),
     path('sales/<str:category>/manage_shops/', views.ManageShopsView.as_view(), name='manage_shops'),
 
 ]

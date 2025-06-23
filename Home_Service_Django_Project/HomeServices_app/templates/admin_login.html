@@ -10,22 +10,39 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
-            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            margin: 0;
+            padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(180deg, #232526 0%, #e0e5ec 100%);
+            position: relative;
+            overflow-x: hidden;
         }
-
+        /* Unique animated organic blobs using SVG */
+        .organic-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
+        }
+        .organic-bg svg {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
         .login-container {
-            background: white;
+            background: rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
             padding: 40px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             max-width: 400px;
             width: 100%;
+            z-index: 10;
+            margin: 60px auto;
         }
 
         .login-header {
@@ -154,6 +171,45 @@
     </style>
 </head>
 <body>
+    <!-- Unique animated organic blobs background -->
+    <div class="organic-bg">
+        <svg viewBox="0 0 1440 900" preserveAspectRatio="none">
+            <defs>
+                <filter id="glow1" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="30" result="blur"/>
+                    <feMerge>
+                        <feMergeNode in="blur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+                <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="50" result="blur"/>
+                    <feMerge>
+                        <feMergeNode in="blur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </defs>
+            <path id="blob1" d="M 300 400 Q 350 300 500 350 Q 650 400 600 550 Q 550 700 400 650 Q 250 600 300 400 Z" fill="#43cea2" opacity="0.25" filter="url(#glow1)">
+                <animate attributeName="d" dur="12s" repeatCount="indefinite"
+                    values="M 300 400 Q 350 300 500 350 Q 650 400 600 550 Q 550 700 400 650 Q 250 600 300 400 Z;
+                            M 320 420 Q 370 320 520 370 Q 670 420 620 570 Q 570 720 420 670 Q 270 620 320 420 Z;
+                            M 300 400 Q 350 300 500 350 Q 650 400 600 550 Q 550 700 400 650 Q 250 600 300 400 Z"/>
+            </path>
+            <path id="blob2" d="M 900 200 Q 1000 100 1200 200 Q 1300 300 1200 400 Q 1100 500 1000 400 Q 900 300 900 200 Z" fill="#4b2067" opacity="0.22" filter="url(#glow2)">
+                <animate attributeName="d" dur="14s" repeatCount="indefinite"
+                    values="M 900 200 Q 1000 100 1200 200 Q 1300 300 1200 400 Q 1100 500 1000 400 Q 900 300 900 200 Z;
+                            M 920 220 Q 1020 120 1220 220 Q 1320 320 1220 420 Q 1120 520 1020 420 Q 920 320 920 220 Z;
+                            M 900 200 Q 1000 100 1200 200 Q 1300 300 1200 400 Q 1100 500 1000 400 Q 900 300 900 200 Z"/>
+            </path>
+            <path id="blob3" d="M 700 700 Q 800 650 900 700 Q 1000 750 950 850 Q 900 950 800 900 Q 700 850 700 700 Z" fill="#185a9d" opacity="0.18" filter="url(#glow1)">
+                <animate attributeName="d" dur="16s" repeatCount="indefinite"
+                    values="M 700 700 Q 800 650 900 700 Q 1000 750 950 850 Q 900 950 800 900 Q 700 850 700 700 Z;
+                            M 720 720 Q 820 670 920 720 Q 1020 770 970 870 Q 920 970 820 920 Q 720 870 720 720 Z;
+                            M 700 700 Q 800 650 900 700 Q 1000 750 950 850 Q 900 950 800 900 Q 700 850 700 700 Z"/>
+            </path>
+        </svg>
+    </div>
     <div class="login-container">
         <div class="login-header">
             <h2><i class="fas fa-user-cog"></i> Admin Login</h2>
@@ -193,7 +249,7 @@
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <div class="input-group">
+                <div class="input-group position-relative">
                     <div class="input-group-prepend">
                         <span class="input-group-text">
                             <i class="fas fa-lock"></i>
@@ -205,6 +261,9 @@
                            name="password" 
                            placeholder="Enter password" 
                            required>
+                    <span class="password-toggle" onclick="togglePassword('password', 'toggleIcon1')" style="position:absolute; right:15px; top:50%; transform:translateY(-50%); cursor:pointer;">
+                        <i class="fa fa-eye" id="toggleIcon1"></i>
+                    </span>
                 </div>
             </div>
 
@@ -219,7 +278,7 @@
 
         <div class="back-link">
             <a href="{% url 'choose_login' %}">
-                <i class="fas fa-arrow-left"></i> Back to Login Options
+                <i class="fas fa-arrow-left"></i> Back to choose-login
             </a>
         </div>
     </div>
@@ -228,5 +287,21 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <script>
+    function togglePassword(fieldId, iconId) {
+        var field = document.getElementById(fieldId);
+        var icon = document.getElementById(iconId);
+        if (field.type === "password") {
+            field.type = "text";
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            field.type = "password";
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
+    </script>
 </body>
 </html> 

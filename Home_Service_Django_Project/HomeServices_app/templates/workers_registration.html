@@ -142,13 +142,19 @@
                 <label for="profile_pic">Profile Picture:</label>
                 <input type="file" class="form-control" id="profile_pic" name="profile_pic" required>
             </div>
-             <div class="form-group col-md-6">
+             <div class="form-group col-md-6 position-relative">
                 <label for="password">Set Password:</label>
                 <input type="password" class="form-control" id="password" name="password" required>
+                <span class="password-toggle" onclick="togglePassword('password', 'toggleIcon1')" style="position:absolute; right:15px; top:38px; cursor:pointer;">
+                    <i class="fa fa-eye" id="toggleIcon1"></i>
+                </span>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-6 position-relative">
                 <label for="cpassword">Confirm Password :</label>
                 <input type="password" class="form-control" id="cpassword" name="cpassword" required>
+                <span class="password-toggle" onclick="togglePassword('cpassword', 'toggleIcon2')" style="position:absolute; right:15px; top:38px; cursor:pointer;">
+                    <i class="fa fa-eye" id="toggleIcon2"></i>
+                </span>
             </div>
 
             <button type="submit" class="btn btn-primary">Submit</button>
@@ -161,6 +167,7 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
     <script>
     function validateForm() {
         // Email validation for Gmail and Yahoo only
@@ -189,6 +196,20 @@
             e.preventDefault();
         }
     });
+
+    function togglePassword(fieldId, iconId) {
+        var field = document.getElementById(fieldId);
+        var icon = document.getElementById(iconId);
+        if (field.type === "password") {
+            field.type = "text";
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
+        } else {
+            field.type = "password";
+            icon.classList.remove('fa-eye-slash');
+            icon.classList.add('fa-eye');
+        }
+    }
     </script>
 </body>
 </html>

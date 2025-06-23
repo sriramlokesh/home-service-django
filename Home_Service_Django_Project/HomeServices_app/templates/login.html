@@ -11,44 +11,55 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         body {
-            background-color: #f7f7f7;
             min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(180deg, #232526 0%, #e0e5ec 100%);
+            position: relative;
+            overflow-x: hidden;
         }
-
-        .container {
-            max-width: 400px;
-            margin: auto;
+        /* Unique animated organic blobs using SVG */
+        .organic-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+            overflow: hidden;
         }
-
+        .organic-bg svg {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
         .login-form {
-            background: white;
+            background: rgba(255, 255, 255, 0.18);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            z-index: 10;
+            margin: 60px auto;
         }
-
         .login-form h2 {
             color: #333;
             text-align: center;
             margin-bottom: 30px;
         }
-
         .form-group {
             margin-bottom: 20px;
             position: relative;
         }
-
         .form-control {
             height: 45px;
             padding: 10px 15px;
             border-radius: 5px;
             border: 1px solid #ddd;
         }
-
         .btn-login {
             width: 100%;
             height: 45px;
@@ -56,17 +67,14 @@
             font-weight: 500;
             color: white;
         }
-
         .btn-login:hover {
             opacity: 0.9;
         }
-
         .error-message {
             color: #dc3545;
             text-align: center;
             margin-bottom: 20px;
         }
-
         .back-link {
             display: block;
             text-align: center;
@@ -74,54 +82,43 @@
             color: #666;
             text-decoration: none;
         }
-
         .back-link:hover {
             text-decoration: underline;
         }
-
         .forgot-password {
             text-align: right;
             margin-bottom: 20px;
         }
-
         .forgot-password a {
             color: #666;
             font-size: 14px;
         }
-
         .user-input {
             border-color: #007bff;
         }
-
         .worker-input {
             border-color: #28a745;
         }
-
         .admin-input {
             border-color: #dc3545;
         }
-
         .user-button {
             background-color: #007bff;
             border-color: #007bff;
         }
-
         .worker-button {
             background-color: #28a745;
             border-color: #28a745;
         }
-
         .admin-button {
             background-color: #dc3545;
             border-color: #dc3545;
         }
-
         .user-button:hover,
         .worker-button:hover,
         .admin-button:hover {
             color: white;
         }
-
         /* Password toggle icon styles */
         .password-toggle {
             position: absolute;
@@ -133,11 +130,9 @@
             padding: 5px;
             z-index: 10;
         }
-
         .password-toggle:hover {
             color: #333;
         }
-
         /* Adjust password input padding to prevent text behind icon */
         input[type="password"],
         input[type="text"] {
@@ -146,6 +141,45 @@
     </style>
 </head>
 <body>
+    <!-- Unique animated organic blobs background -->
+    <div class="organic-bg">
+        <svg viewBox="0 0 1440 900" preserveAspectRatio="none">
+            <defs>
+                <filter id="glow1" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="30" result="blur"/>
+                    <feMerge>
+                        <feMergeNode in="blur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+                <filter id="glow2" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="50" result="blur"/>
+                    <feMerge>
+                        <feMergeNode in="blur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+            </defs>
+            <path id="blob1" d="M 300 400 Q 350 300 500 350 Q 650 400 600 550 Q 550 700 400 650 Q 250 600 300 400 Z" fill="#43cea2" opacity="0.25" filter="url(#glow1)">
+                <animate attributeName="d" dur="12s" repeatCount="indefinite"
+                    values="M 300 400 Q 350 300 500 350 Q 650 400 600 550 Q 550 700 400 650 Q 250 600 300 400 Z;
+                            M 320 420 Q 370 320 520 370 Q 670 420 620 570 Q 570 720 420 670 Q 270 620 320 420 Z;
+                            M 300 400 Q 350 300 500 350 Q 650 400 600 550 Q 550 700 400 650 Q 250 600 300 400 Z"/>
+            </path>
+            <path id="blob2" d="M 900 200 Q 1000 100 1200 200 Q 1300 300 1200 400 Q 1100 500 1000 400 Q 900 300 900 200 Z" fill="#4b2067" opacity="0.22" filter="url(#glow2)">
+                <animate attributeName="d" dur="14s" repeatCount="indefinite"
+                    values="M 900 200 Q 1000 100 1200 200 Q 1300 300 1200 400 Q 1100 500 1000 400 Q 900 300 900 200 Z;
+                            M 920 220 Q 1020 120 1220 220 Q 1320 320 1220 420 Q 1120 520 1020 420 Q 920 320 920 220 Z;
+                            M 900 200 Q 1000 100 1200 200 Q 1300 300 1200 400 Q 1100 500 1000 400 Q 900 300 900 200 Z"/>
+            </path>
+            <path id="blob3" d="M 700 700 Q 800 650 900 700 Q 1000 750 950 850 Q 900 950 800 900 Q 700 850 700 700 Z" fill="#185a9d" opacity="0.18" filter="url(#glow1)">
+                <animate attributeName="d" dur="16s" repeatCount="indefinite"
+                    values="M 700 700 Q 800 650 900 700 Q 1000 750 950 850 Q 900 950 800 900 Q 700 850 700 700 Z;
+                            M 720 720 Q 820 670 920 720 Q 1020 770 970 870 Q 920 970 820 920 Q 720 870 720 720 Z;
+                            M 700 700 Q 800 650 900 700 Q 1000 750 950 850 Q 900 950 800 900 Q 700 850 700 700 Z"/>
+            </path>
+        </svg>
+    </div>
     <div class="container">
         <div class="login-form">
             <h2>
@@ -198,7 +232,7 @@
             </form>
         </div>
         
-        <a href="{% url 'choose_login' %}" class="back-link">← Back to login options</a>
+        <a href="{% url 'choose_login' %}" class="back-link">← Back to choose-login</a>
     </div>
 
     <!-- Scripts -->

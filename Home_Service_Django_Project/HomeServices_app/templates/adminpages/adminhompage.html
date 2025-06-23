@@ -12,7 +12,7 @@
                             <div class="card-body">
                                 <div class="stat-widget-five">
                                     <div class="stat-icon dib flat-color-1">
-                                        <i class="pe-7s-cash"></i>
+                                        <i class="pe-7f-cash"></i>
                                     </div>
                                     <div class="stat-content">
                                         <div class="text-left dib">
@@ -30,7 +30,7 @@
                             <div class="card-body">
                                 <div class="stat-widget-five">
                                     <div class="stat-icon dib flat-color-2">
-                                        <i class="pe-7s-cart"></i>
+                                        <i class="pe-7f-cart"></i>
                                     </div>
                                     <div class="stat-content">
                                         <div class="text-left dib">
@@ -48,7 +48,7 @@
                             <div class="card-body">
                                 <div class="stat-widget-five">
                                     <div class="stat-icon dib flat-color-3">
-                                        <i class="pe-7s-browser"></i>
+                                        <i class="pe-7f-browser"></i>
                                     </div>
                                     <div class="stat-content">
                                         <div class="text-left dib">
@@ -66,7 +66,7 @@
                             <div class="card-body">
                                 <div class="stat-widget-five">
                                     <div class="stat-icon dib flat-color-4">
-                                        <i class="pe-7s-users"></i>
+                                        <i class="pe-7f-users"></i>
                                     </div>
                                     <div class="stat-content">
                                         <div class="text-left dib">
@@ -221,5 +221,63 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="mb-3">Sales Activity</h4>
+                                <canvas id="sales-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 {% endblock %}
+{{ sales_labels|json_script:"sales-labels" }}
+{{ sales_values|json_script:"sales-values" }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    (function ($) {
+        "use strict";
+
+        var ctx = document.getElementById("sales-chart");
+        if (ctx) {
+            ctx.height = 150;
+            var labels = JSON.parse(document.getElementById('sales-labels').textContent);
+            var values = JSON.parse(document.getElementById('sales-values').textContent);
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: "Sales",
+                        data: values,
+                        borderColor: 'rgba(220, 53, 69, 0.75)',
+                        borderWidth: 3,
+                        backgroundColor: 'transparent'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    legend: {
+                        display: false
+                    },
+                    scales: {
+                        xAxes: [{
+                            ticks: {
+                                fontFamily: "Poppins"
+                            }
+                        }],
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true,
+                                fontFamily: "Poppins"
+                            }
+                        }]
+                    }
+                }
+            });
+        }
+    })(jQuery);
+</script>

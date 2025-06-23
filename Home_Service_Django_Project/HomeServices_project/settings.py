@@ -11,7 +11,7 @@ SECRET_KEY = '4YCPOWggJFuZ8D7kU6yZ9f5LDPKMgNE2S28WSUQJ7eAHTS8bDcfS-nRQi7xUohSh1U
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+ALLOWED_HOSTS = ['192.168.85.229', 'localhost', '127.0.0.1']
 
 # Application definition
 INSTALLED_APPS = [

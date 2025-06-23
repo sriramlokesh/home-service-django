@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loading...</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+        }
+        .loader-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: url("{% static 'user_assets/img/converted.png' %}");
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: contain;
+            background-attachment: fixed;
+            background-color: #4a5157; /* Dark slate gray from image */
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .loading-container {
+            position: relative;
+            top: 90px; /* Adjust this to position the loader vertically */
+            width: 30%;
+            max-width: 350px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .progress-bar-container {
+            width: 100%;
+            height: 4px;
+            background-color: rgba(0, 0, 0, 0.25);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: #4CAF50; /* Green */
+            border-radius: 4px;
+        }
+        .progress-text {
+            margin-top: 10px;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="loader-bg">
+        <div class="loading-container">
+            <div class="progress-bar-container">
+                <div id="progressBar" class="progress-bar"></div>
+            </div>
+            <p id="progressText" class="progress-text">0%</p>
+        </div>
+    </div>
+    <script>
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const duration = 5000; // Total duration in milliseconds (5 seconds)
+        let startTime = null;
+
+        function animateProgress(timestamp) {
+            if (!startTime) startTime = timestamp;
+            const elapsedTime = timestamp - startTime;
+            const progress = Math.min(elapsedTime / duration, 1); // value from 0 to 1
+
+            progressBar.style.width = (progress * 100) + '%';
+            progressText.innerText = Math.round(progress * 100) + '%';
+
+            if (elapsedTime < duration) {
+                requestAnimationFrame(animateProgress);
+            } else {
+                // Animation complete, redirect
+                setTimeout(() => {
+                    window.location.href = "/home/";
+                }, 200); // Short delay after reaching 100%
+            }
+        }
+
+        requestAnimationFrame(animateProgress);
+    </script>
+</body>
+</html> 

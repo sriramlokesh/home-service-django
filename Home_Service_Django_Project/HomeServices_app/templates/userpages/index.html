@@ -2,6 +2,37 @@
 {% block content %}
 {% load static %}
 
+<style>
+  .loader-bg {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background: url("{% static 'user_assets/img/converted.png' %}") no-repeat center center;
+    background-size: cover;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s;
+  }
+  .loader-spinner {
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 1s linear infinite;
+    background: rgba(255,255,255,0.2);
+  }
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  .main-content-hidden { display: none; }
+</style>
+<div id="loader" class="loader-bg">
+  <div class="loader-spinner"></div>
+</div>
+<div id="main-content" class="main-content-hidden">
 
     <!-- Carousel Start -->
     <div class="container-fluid p-0 pb-5">
@@ -124,7 +155,7 @@
                         <div class="section-title text-start">
                             <h1 class="display-5 mb-4">About Us</h1>
                         </div>
-                        <p class="mb-4 pb-2">ALL-SERVED-SERVICE is a newly launched initiative aimed at addressing the growing need for reliable manpower in the service sector. Our journey began with a focused effort to understand the local landscape—starting with surveys of potential service providers in and around Hubli. This helped us build a valuable database of trusted domestic support professionals, whom we proudly refer to as our “domestic patrol.”</p>
+                        <p class="mb-4 pb-2">ALL-SERVED-SERVICE is a newly launched initiative aimed at addressing the growing need for reliable manpower in the service sector. Our journey began with a focused effort to understand the local landscape—starting with surveys of potential service providers in and around Hubli. This helped us build a valuable database of trusted domestic support professionals, whom we proudly refer to as our "domestic patrol."</p>
                         <div class="row g-4 mb-4 pb-2">
                             <div class="col-sm-6 wow fadeIn" data-wow-delay="0.1s">
                                 <div class="d-flex align-items-center">
@@ -292,4 +323,16 @@
         </div>
     </div>
     <!-- Testimonial End -->
+</div>
+<script>
+window.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() {
+    document.getElementById('loader').style.opacity = 0;
+    setTimeout(function() {
+      document.getElementById('loader').style.display = 'none';
+      document.getElementById('main-content').classList.remove('main-content-hidden');
+    }, 500);
+  }, 5000);
+});
+</script>
 {% endblock %}

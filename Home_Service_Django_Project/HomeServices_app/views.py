@@ -21,6 +21,9 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
 from django.utils.decorators import method_decorator
 from django.urls import reverse
+from django.db.models import Sum
+from django.db.models.functions import TruncMonth
+import json
 
 
 
@@ -80,7 +83,7 @@ class Login(View):
 
 def logout_view(request):
     logout(request)
-    return redirect('login_page')
+    return redirect('choose_login')
 
 def validate_phone_number(phone_number):
     # Remove any non-digit characters
@@ -410,11 +413,24 @@ class admmin_home(LoginRequiredMixin, View):
         completed_requests = Response.objects.filter(status=True).count()
         pending_requests = Response.objects.filter(status=False).count()
         total_users = users.objects.count()
+
+        # sales activity
+        sales_data = Response.objects.filter(status=True).annotate(
+            month=TruncMonth('Date')
+        ).values('month').annotate(
+            total_sales=Sum('requests__service__price')
+        ).order_by('month')
+
+        sales_labels = [sale['month'].strftime('%B') for sale in sales_data]
+        sales_values = [float(sale['total_sales']) for sale in sales_data]
+
         context = {
             'total_requests': total_requests,
             'completed_requests': completed_requests,
             'pending_requests': pending_requests,
             'total_users': total_users,
+            'sales_labels': json.dumps(sales_labels),
+            'sales_values': json.dumps(sales_values),
         }
         return render(request, 'adminpages/adminhompage.html',context)
 
@@ -1305,6 +1321,13 @@ class EditShopView(View):
             'error': error
         })
 
+class DeleteShopView(View):
+    def get(self, request, shop_id):
+        shop = get_object_or_404(Shop, pk=shop_id)
+        category = shop.category
+        shop.delete()
+        return redirect('manage_shops', category=category)
+
 class AddProductToShopView(View):
     def get(self, request, shop_id):
         shop = get_object_or_404(Shop, pk=shop_id)
@@ -1324,9 +1347,9 @@ class AddProductToShopView(View):
         return render(request, 'adminpages/add_product.html', {'form': form, 'shop': shop})
 
 class ManageShopsView(View):
-    def get(self, request):
-        shops = Shop.objects.all()
-        return render(request, 'adminpages/manage_shops.html', {'shops': shops})
+    def get(self, request, category):
+        shops = Shop.objects.filter(category=category)
+        return render(request, 'adminpages/manage_shops.html', {'shops': shops, 'category': category})
 
 @method_decorator([csrf_protect, ensure_csrf_cookie], name='dispatch')
 class AdminRegistration(View):
@@ -1607,5 +1630,8 @@ class AdminEditView(LoginRequiredMixin, View):
                 'registration_request': registration_request,
             }
             return render(request, 'admin_edit.html', context)
+
+def loading_view(request):
+    return render(request, 'loading.html')
 
         
