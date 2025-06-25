@@ -15,10 +15,11 @@ from django.core.mail import send_mail
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.conf import settings
-from .models import Response, State, workers, users, ServiceCatogarys, Country, City, Feedback, ServiceRequests, Contact, ServiceTracking, Product, Shop, AdminRegistrationRequest
+from .models import Response, State, workers, users, ServiceCatogarys, Country, City, Feedback, ServiceRequests, Contact, ServiceTracking, Product, Shop, AdminRegistrationRequest, NewsletterSubscription
 from .forms import stateform, ProductForm, AdminRegistrationForm, AdminEditForm
 from django.contrib import messages
-from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie
+from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie, csrf_exempt
+from django.views.decorators.http import require_POST
 from django.utils.decorators import method_decorator
 from django.urls import reverse
 from django.db.models import Sum
@@ -48,17 +49,28 @@ class Login(View):
         return response
         
     def post(self, request):
-        username = request.POST.get('uname')
+        login_input = request.POST.get('uname')
         password = request.POST.get('psw')
         login_type = request.POST.get('login_type', 'user')
         
-        if not username or not password:
+        if not login_input or not password:
             return render(request, 'login.html', {
-                'error_msg': "Please provide both username and password.",
+                'error_msg': "Please provide both username/email and password.",
                 'login_type': login_type
             })
         
-        user = authenticate(request, username=username, password=password)
+        user = None
+        # Check if input is an email
+        try:
+            validate_email(login_input)
+            try:
+                user_obj = User.objects.get(email=login_input)
+                user = authenticate(request, username=user_obj.username, password=password)
+            except User.DoesNotExist:
+                pass  # User with this email does not exist
+        except ValidationError:
+            # Input is not an email, so treat it as a first name (username)
+            user = authenticate(request, username=login_input, password=password)
         
         if user is not None:
             if login_type == 'admin' and user.is_superuser and user.is_staff:
@@ -77,7 +89,7 @@ class Login(View):
                 })
         else:
             return render(request, 'login.html', {
-                'error_msg': "Invalid username or password.",
+                'error_msg': "Invalid username/email or password.",
                 'login_type': login_type
             })
 
@@ -106,6 +118,10 @@ class User_Register(View):
         gender = request.POST.get('gender')
         password = request.POST.get('password')
         cpassword = request.POST.get('cpassword')
+
+        # Set default profile picture if none is provided
+        if not profile_pics:
+            profile_pics = 'static/user_assets/img/default_user_icon.jpg'
 
         # Validate email
         try:
@@ -140,7 +156,8 @@ class User_Register(View):
                 contact_number=contact_number,
                 profile_pic=profile_pics
             )
-            return render(request, 'login.html', {'msg': "Added successfully!"})
+            messages.success(request, "Registration successful! Please log in.")
+            return redirect('choose_login')
         else:
             return render(request, 'user_register.html', {'msg': "Passwords do not match!"})
 
@@ -1633,5 +1650,32 @@ class AdminEditView(LoginRequiredMixin, View):
 
 def loading_view(request):
     return render(request, 'loading.html')
+
+@csrf_exempt
+@require_POST
+def newsletter_signup(request):
+    try:
+        data = json.loads(request.body)
+        email = data.get('email', '').strip()
+        
+        if not email:
+            return JsonResponse({'success': False, 'message': 'Email is required'}, status=400)
+        
+        # Check if email already exists
+        if NewsletterSubscription.objects.filter(email=email).exists():
+            return JsonResponse({'success': False, 'message': 'Email already subscribed'}, status=400)
+        
+        # Create new subscription
+        subscription = NewsletterSubscription.objects.create(email=email)
+        
+        return JsonResponse({
+            'success': True, 
+            'message': 'Successfully subscribed to newsletter!'
+        })
+        
+    except json.JSONDecodeError:
+        return JsonResponse({'success': False, 'message': 'Invalid JSON data'}, status=400)
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': 'An error occurred'}, status=500)
 
         

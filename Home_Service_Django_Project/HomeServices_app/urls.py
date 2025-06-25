@@ -126,3 +126,8 @@ urlpatterns = [
 
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_URL)
+
+# Newsletter signup endpoint
+urlpatterns += [
+    path('newsletter-signup/', views.newsletter_signup, name='newsletter_signup'),
+]

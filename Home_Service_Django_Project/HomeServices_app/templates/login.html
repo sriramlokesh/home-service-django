@@ -192,6 +192,11 @@
                 {% endif %}
             </h2>
             
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
             {% if error_msg %}
                 <div class="error-message">{{ error_msg }}</div>
             {% endif %}
@@ -203,7 +208,7 @@
                 <div class="form-group">
                     <input type="text" 
                            class="form-control {% if login_type == 'user' %}user-input{% elif login_type == 'worker' %}worker-input{% else %}admin-input{% endif %}" 
-                           placeholder="Username" 
+                           placeholder="First Name or Email" 
                            name="uname" 
                            id="uname" 
                            required>

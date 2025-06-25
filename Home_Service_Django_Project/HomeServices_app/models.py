@@ -230,5 +230,18 @@ class AdminRegistrationRequest(models.Model):
         verbose_name = 'Admin Registration Request'
         verbose_name_plural = 'Admin Registration Requests'
 
+class NewsletterSubscription(models.Model):
+    email = models.EmailField(unique=True)
+    subscribed_at = models.DateTimeField(auto_now_add=True)
+    is_active = models.BooleanField(default=True)
+    
+    def __str__(self):
+        return self.email
+    
+    class Meta:
+        ordering = ['-subscribed_at']
+        verbose_name = 'Newsletter Subscription'
+        verbose_name_plural = 'Newsletter Subscriptions'
+
 
 

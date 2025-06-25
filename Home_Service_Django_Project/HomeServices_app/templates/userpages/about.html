@@ -1,6 +1,94 @@
 {% extends "userpages/user_header_footer.html" %}
 {% block content %}
 {% load static %}
+
+<style>
+    .team-item .overflow-hidden {
+        height: 300px;
+        overflow: hidden;
+    }
+    
+    .team-item .overflow-hidden img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+    
+    .team-item {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .team-item:hover {
+        transform: translateY(-5px);
+    }
+    
+    .team-social {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    
+    .team-item:hover .team-social {
+        opacity: 1;
+    }
+    
+    .team-social .btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #0d6efd;
+        color: white;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+    
+    .team-social .btn:hover {
+        background: #0b5ed7;
+        transform: scale(1.1);
+    }
+    
+    /* Ensure all team cards have equal height */
+    .row.g-4 {
+        align-items: stretch;
+    }
+    
+    .col-lg-4.col-md-6 {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    /* Make sure all team member cards are the same size */
+    .team-item {
+        min-height: 400px;
+    }
+    
+    .team-item .text-center {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+</style>
+
     <!-- Page Header Start -->
     <div class="container-fluid page-header py-5 mb-5">
         <div class="container py-5">
@@ -111,7 +199,6 @@
     </div>
     <!-- About End -->
 
-
     <!-- Team Start -->
     <div class="container-xxl py-5">
         <div class="container">
@@ -130,22 +217,37 @@
                         </div>
                         <div class="text-center border border-5 border-light border-top-0 p-4">
                             <h5 class="mb-0">SRIRAM LOKESH.S</h5>
-                            <small>MCA GRADUATE, FOUNDER</small>
+                            <small>MCA GRADUATE, FOUNDER & CEO</small>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
                     <div class="team-item">
                         <div class="overflow-hidden position-relative">
-                            <img class="img-fluid" src="{% static 'user_assets/img/team-2.jpg' %}" alt="Suriya Prakash">
+                            <img class="img-fluid" src="{% static 'user_assets/img/Anuj.jpg' %}" alt="Suriya Prakash">
                             <div class="team-social">
                                 <a class="btn btn-square" href="https://www.linkedin.com/in/suriya-prakash-j-b18a3a258?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"><i class="fab fa-linkedin"></i></a>
                                 <a class="btn btn-square" href="https://www.instagram.com/black_suri?igsh=bjF6cXlwbHA3bzY1" target="_blank"><i class="fab fa-instagram"></i></a>
                             </div>
                         </div>
                         <div class="text-center border border-5 border-light border-top-0 p-4">
-                            <h5 class="mb-0">SURIYA PRAKASH.J</h5>
-                            <small>MCA GRADUATE, CEO</small>
+                            <h5 class="mb-0">ANUJKUMAR.M</h5>
+                            <small>MBA,PARTNER & CEO</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="team-item">
+                        <div class="overflow-hidden position-relative">
+                            <img class="img-fluid" src="{% static 'user_assets/img/sara.jpg' %}" alt="Sara">
+                            <div class="team-social">
+                                <a class="btn btn-square" href="mailto:saraelango07@gmail.com"><i class="fas fa-envelope"></i></a>
+                                <a class="btn btn-square" href="https://www.instagram.com/sarahgiltheo?igsh=a2U5eHFvemd2N2Jp" target="_blank"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                        <div class="text-center border border-5 border-light border-top-0 p-4">
+                            <h5 class="mb-0">SARA GILBERT</h5>
+                            <small>M.TECH(CSE),PARTNER</small>
                         </div>
                     </div>
                 </div>
