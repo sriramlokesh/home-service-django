@@ -1,0 +1,24 @@
+{% extends "adminpages/admin_header_footer.html" %}
+{% load static %}
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">{% if edit %}Edit Place{% else %}Add Place{% endif %}</div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="id_name">Place</label>
+                            {{ form.name }}
+                        </div>
+                        <button type="submit" class="btn btn-success">{% if edit %}Update Place{% else %}Add Place{% endif %}</button>
+                        <a href="{% url 'manageplace' %}" class="btn btn-secondary">Back</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

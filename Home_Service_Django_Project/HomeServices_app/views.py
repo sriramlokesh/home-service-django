@@ -15,8 +15,8 @@ from django.core.mail import send_mail
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.conf import settings
-from .models import Response, State, workers, users, ServiceCatogarys, Country, City, Feedback, ServiceRequests, Contact, ServiceTracking, Product, Shop, AdminRegistrationRequest, NewsletterSubscription
-from .forms import stateform, ProductForm, AdminRegistrationForm, AdminEditForm
+from .models import Response, State, workers, users, ServiceCatogarys, Country, City, Feedback, ServiceRequests, Contact, ServiceTracking, Product, Shop, AdminRegistrationRequest, NewsletterSubscription, Place
+from .forms import stateform, ProductForm, AdminRegistrationForm, AdminEditForm, PlaceForm
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect, ensure_csrf_cookie, csrf_exempt
 from django.views.decorators.http import require_POST
@@ -106,13 +106,17 @@ def validate_phone_number(phone_number):
 
 class User_Register(View):
     def get(self, request):
-        return render(request, 'user_register.html')
+        from .models import Place
+        places = Place.objects.all()
+        return render(request, 'user_register.html', {'places': places})
 
     def post(self,request):
+        from .models import Place
         first_name = request.POST.get('firstname')
         last_name = request.POST.get('lastname')
         email = request.POST.get('email')
         contact_number = request.POST.get('contactnumber')
+        place_id = request.POST.get('place')
         address = request.POST.get('address')
         profile_pics = request.FILES.get('profile_pic')
         gender = request.POST.get('gender')
@@ -127,15 +131,23 @@ class User_Register(View):
         try:
             validate_email(email)
             if User.objects.filter(email=email).exists():
-                return render(request, 'user_register.html', {'msg': "Email already exists!"})
+                return render(request, 'user_register.html', {'msg': "Email already exists!", 'places': Place.objects.all()})
         except ValidationError:
-            return render(request, 'user_register.html', {'msg': "Invalid email format!"})
+            return render(request, 'user_register.html', {'msg': "Invalid email format!", 'places': Place.objects.all()})
 
         # Validate phone number
         try:
             contact_number = validate_phone_number(contact_number)
         except ValidationError as e:
-            return render(request, 'user_register.html', {'msg': str(e)})
+            return render(request, 'user_register.html', {'msg': str(e), 'places': Place.objects.all()})
+
+        # Validate place
+        if not place_id:
+            return render(request, 'user_register.html', {'msg': "Place is required!", 'places': Place.objects.all()})
+        try:
+            place_obj = Place.objects.get(id=place_id)
+        except Place.DoesNotExist:
+            return render(request, 'user_register.html', {'msg': "Invalid place selected!", 'places': Place.objects.all()})
 
         # Check if passwords match
         if password == cpassword:
@@ -154,12 +166,13 @@ class User_Register(View):
                 Address=address, 
                 gender=gender, 
                 contact_number=contact_number,
-                profile_pic=profile_pics
+                profile_pic=profile_pics,
+                city=place_obj.name  # Save the place name in the city field
             )
             messages.success(request, "Registration successful! Please log in.")
             return redirect('choose_login')
         else:
-            return render(request, 'user_register.html', {'msg': "Passwords do not match!"})
+            return render(request, 'user_register.html', {'msg': "Passwords do not match!", 'places': Place.objects.all()})
 
 
 
@@ -1677,5 +1690,42 @@ def newsletter_signup(request):
         return JsonResponse({'success': False, 'message': 'Invalid JSON data'}, status=400)
     except Exception as e:
         return JsonResponse({'success': False, 'message': 'An error occurred'}, status=500)
+
+class ManagePlace(LoginRequiredMixin, View):
+    def get(self, request):
+        place_records = Place.objects.all()
+        return render(request, 'adminpages/ManagePlace.html', {'place_records': place_records})
+
+class AddPlace(LoginRequiredMixin, View):
+    def get(self, request):
+        form = PlaceForm()
+        return render(request, 'place.html', {'form': form})
+
+    def post(self, request):
+        form = PlaceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/manageplace')
+        return render(request, 'place.html', {'form': form})
+
+class DeletePlace(LoginRequiredMixin, View):
+    def get(self, request, id):
+        place = Place.objects.get(id=id)
+        place.delete()
+        return HttpResponseRedirect('/manageplace')
+
+class EditPlace(LoginRequiredMixin, View):
+    def get(self, request, id):
+        place = Place.objects.get(id=id)
+        form = PlaceForm(instance=place)
+        return render(request, 'place.html', {'form': form, 'edit': True, 'place_id': id})
+
+    def post(self, request, id):
+        place = Place.objects.get(id=id)
+        form = PlaceForm(request.POST, instance=place)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/manageplace')
+        return render(request, 'place.html', {'form': form, 'edit': True, 'place_id': id})
 
         

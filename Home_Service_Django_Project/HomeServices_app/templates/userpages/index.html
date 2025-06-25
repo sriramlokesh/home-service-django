@@ -44,6 +44,75 @@
         line-height: 1.4;
         margin-bottom: 1rem;
     }
+    .team-item .overflow-hidden {
+        height: 300px;
+        overflow: hidden;
+    }
+    .team-item .overflow-hidden img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+    .team-item {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        min-height: 400px;
+    }
+    .team-item:hover {
+        transform: translateY(-5px);
+    }
+    .team-social {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .team-item:hover .team-social {
+        opacity: 1;
+    }
+    .team-social .btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: #0d6efd;
+        color: white;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+    }
+    .team-social .btn:hover {
+        background: #0b5ed7;
+        transform: scale(1.1);
+    }
+    .row.g-4 {
+        align-items: stretch;
+    }
+    .col-lg-4.col-md-6 {
+        display: flex;
+        flex-direction: column;
+    }
+    .team-item .text-center {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
 </style>
 
 <div id="main-content">
@@ -202,8 +271,63 @@
     </div>
     <!-- About End -->
 
+    <!-- Team Start -->
+    <div class="container-xxl py-5">
+        <div class="container">
+            <div class="section-title text-center">
+                <h1 class="display-5 mb-5">Team Members</h1>
+            </div>
+            <div class="row g-4 justify-content-center">
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <div class="team-item">
+                        <div class="overflow-hidden position-relative">
+                            <img class="img-fluid" src="{% static 'user_assets/img/sri.jpg' %}" alt="Sriram Lokesh">
+                            <div class="team-social">
+                                <a class="btn btn-square" href="https://www.linkedin.com/in/sriramlokesh-s-253533273?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"><i class="fab fa-linkedin"></i></a>
+                                <a class="btn btn-square" href="https://www.instagram.com/__350_ridexpectant_tn60?igsh=OTlqZzE2eHRmN2xz" target="_blank"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                        <div class="text-center border border-5 border-light border-top-0 p-4">
+                            <h5 class="mb-0">SRIRAM LOKESH.S</h5>
+                            <small>MCA GRADUATE, FOUNDER & CEO</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
+                    <div class="team-item">
+                        <div class="overflow-hidden position-relative">
+                            <img class="img-fluid" src="{% static 'user_assets/img/Anuj.jpg' %}" alt="Suriya Prakash">
+                            <div class="team-social">
+                                <a class="btn btn-square" href="https://www.linkedin.com/in/suriya-prakash-j-b18a3a258?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank"><i class="fab fa-linkedin"></i></a>
+                                <a class="btn btn-square" href="https://www.instagram.com/black_suri?igsh=bjF6cXlwbHA3bzY1" target="_blank"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                        <div class="text-center border border-5 border-light border-top-0 p-4">
+                            <h5 class="mb-0">ANUJKUMAR.M</h5>
+                            <small>MBA,PARTNER & CEO</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
+                    <div class="team-item">
+                        <div class="overflow-hidden position-relative">
+                            <img class="img-fluid" src="{% static 'user_assets/img/sara.jpg' %}" alt="Sara">
+                            <div class="team-social">
+                                <a class="btn btn-square" href="mailto:saraelango07@gmail.com"><i class="fas fa-envelope"></i></a>
+                                <a class="btn btn-square" href="https://www.instagram.com/sarahgiltheo?igsh=a2U5eHFvemd2N2Jp" target="_blank"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                        <div class="text-center border border-5 border-light border-top-0 p-4">
+                            <h5 class="mb-0">SARA GILBERT</h5>
+                            <small>M.TECH(CSE),PARTNER</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Team End -->
 
-    <!-- Service Start -->
 <!-- Service Start -->
 <div class="container-xxl py-5">
     <div class="container">
@@ -215,7 +339,7 @@
             <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="0.{{ forloop.counter0 }}s">
                 <div class="service-item">
                     <div class="overflow-hidden">
-                        <img class="img-fluid" src="{{ service.img.url }}" alt="{{ service.Name }}">
+                            <img class="img-fluid" src="{{ service.img.url }}" alt="{{ service.Name }}">
                     </div>
                     <div class="p-4 text-center border border-5 border-light border-top-0">
                         <h4 class="mb-3">{{ service.Name }}</h4>
@@ -228,9 +352,6 @@
         </div>
     </div>
 </div>
-
-
-<!-- Service End -->
 
     <!-- Service End -->
 

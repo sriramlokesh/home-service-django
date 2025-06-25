@@ -1,10 +1,11 @@
 from django.contrib import admin
-from .models import Product, Shop, AdminRegistrationRequest, ServiceCatogarys, NewsletterSubscription
+from .models import Product, Shop, AdminRegistrationRequest, ServiceCatogarys, NewsletterSubscription, Place
 
 # Register your models here.
 admin.site.register(Shop)
 admin.site.register(ServiceCatogarys)
 admin.site.register(NewsletterSubscription)
+admin.site.register(Place)
 
 @admin.register(AdminRegistrationRequest)
 class AdminRegistrationRequestAdmin(admin.ModelAdmin):

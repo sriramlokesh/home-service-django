@@ -124,6 +124,11 @@ urlpatterns = [
     path('shop/<int:shop_id>/delete/', views.DeleteShopView.as_view(), name='delete_shop'),
     path('sales/<str:category>/manage_shops/', views.ManageShopsView.as_view(), name='manage_shops'),
 
+    path('manageplace/', views.ManagePlace.as_view(), name='manageplace'),
+    path('AddPlace/', views.AddPlace.as_view(), name='AddPlace'),
+    path('DeletePlace/<int:id>', views.DeletePlace.as_view(), name='DeletePlace'),
+    path('EditPlace/<int:id>', views.EditPlace.as_view(), name='EditPlace'),
+
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_URL)
 

@@ -82,7 +82,6 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <a href="{% url 'index' %}" class="nav-item nav-link {% if request.path == '/' or request.path == '/home/' or request.path == '/index/' %}active{% endif %}">🏠Home</a>
-                <a href="{% url 'about' %}" class="nav-item nav-link {% if '/about/' in request.path %}active{% endif %}">❓About</a>
                 <a href="{% url 'services' %}" class="nav-item nav-link {% if '/services/' in request.path %}active{% endif %}">👷🏻‍♂️Service</a>
                 <a href="{% url 'shop' %}" class="nav-item nav-link {% if '/shop/' in request.path %}active{% endif %}">🛒Shop</a>
                 <a href="{% url 'feedback_form' %}" class="nav-item nav-link {% if '/feedback_form/' in request.path %}active{% endif %}">🤷🏼‍♂️Give Feedbacks</a>

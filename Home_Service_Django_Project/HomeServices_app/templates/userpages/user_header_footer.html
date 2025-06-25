@@ -137,7 +137,6 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav p-4 p-lg-0">
                 <a href="{% url 'index' %}" class="nav-item nav-link {% if request.path == '/' or request.path == '/home/' or request.path == '/index/' %}active{% endif %}">🏠Home</a>
-                <a href="{% url 'about' %}" class="nav-item nav-link {% if '/about/' in request.path %}active{% endif %}">❓About</a>
                 <a href="{% url 'services' %}" class="nav-item nav-link {% if '/services/' in request.path %}active{% endif %}">👷🏻‍♂️Service</a>
                 <a href="{% url 'shop' %}" class="nav-item nav-link {% if '/shop/' in request.path %}active{% endif %}">🛒Shop</a>
                 <a href="{% url 'feedback_form' %}" class="nav-item nav-link {% if '/feedback_form/' in request.path %}active{% endif %}">🤷🏼‍♂️Give Feedbacks</a>
@@ -176,15 +175,12 @@
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h4 class="text-light mb-4">Services</h4>
-                    <a class="btn btn-link" href="">General Carpentry</a>
-                    <a class="btn btn-link" href="">Home Cleaning</a>
-                    <a class="btn btn-link" href="">Office Cleaning</a>
-                    <a class="btn btn-link" href="">House Painting</a>
-                    <a class="btn btn-link" href=""></a>
+                    {% for service in services %}
+                        <a class="btn btn-link" href="{% url 'services' %}#service-{{ service.id }}">{{ service.Name }}</a>
+                    {% endfor %}
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h4 class="text-light mb-4">Quick Links</h4>
-                    <a class="btn btn-link" href="{% url 'about' %}">About Us</a>
                     <a class="btn btn-link" href="{% url 'contact' %}">Contact Us</a>
                     <a class="btn btn-link" href="{% url 'services' %}">Our Services</a>
                     <a class="btn btn-link" href="">Terms & Condition</a>

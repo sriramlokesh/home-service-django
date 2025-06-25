@@ -188,3 +188,14 @@ class AdminEditForm(forms.ModelForm):
             phone_number = phone_number[3:]
         
         return phone_number
+
+class PlaceForm(forms.ModelForm):
+    class Meta:
+        model = Place
+        fields = ['name']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter place name', 'label': 'Place'}),
+        }
+        labels = {
+            'name': 'Place',
+        }

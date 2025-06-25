@@ -243,5 +243,11 @@ class NewsletterSubscription(models.Model):
         verbose_name = 'Newsletter Subscription'
         verbose_name_plural = 'Newsletter Subscriptions'
 
+class Place(models.Model):
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
 
 
